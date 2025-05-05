@@ -1,0 +1,230 @@
+ /* Art Advisor Specific Styles */
+ .advisor-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('img/advisor-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    text-align: center;
+    color: white;
+}
+
+.quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: -50px auto 50px;
+    position: relative;
+}
+
+.quiz-step {
+    display: none;
+}
+
+.quiz-step.active {
+    display: block;
+}
+
+.quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.quiz-option {
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    width: 120px;
+}
+
+.quiz-option:hover {
+    transform: translateY(-5px);
+}
+
+.quiz-option.selected {
+    transform: scale(1.05);
+}
+
+.color-option {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.quiz-option.selected .color-option {
+    border-color: #a81c51;
+    box-shadow: 0 5px 15px rgba(168, 28, 81, 0.4);
+}
+
+.style-option {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}
+
+.quiz-option.selected .style-option {
+    border-color: #a81c51;
+    background-color: #fce8ef;
+}
+
+.budget-option, .size-option {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    width: 100%;
+    text-align: center;
+}
+
+.quiz-option.selected .budget-option,
+.quiz-option.selected .size-option {
+    border-color: #a81c51;
+    background-color: #fce8ef;
+}
+
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.art-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.art-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.art-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.art-item:hover img {
+    transform: scale(1.05);
+}
+
+.art-info {
+    padding: 15px;
+}
+
+.art-info h4 {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.art-info p {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.art-price {
+    color: #a81c51;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.advisor-results {
+    display: none;
+    margin-top: 50px;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #a81c51;
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #a81c51;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .quiz-options {
+        gap: 10px;
+    }
+    
+    .quiz-option {
+        width: 100px;
+    }
+    
+    .color-option {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .art-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .quiz-container {
+        padding: 20px;
+        margin: -30px auto 30px;
+    }
+    
+    .quiz-options {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .quiz-option {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+    
+    .art-grid {
+        grid-template-columns: 1fr;
+    }
+}
