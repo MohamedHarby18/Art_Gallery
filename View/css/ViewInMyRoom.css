@@ -1,0 +1,357 @@
+/* View in Room Styles */
+#view-room {
+    padding-top: 100px;
+}
+
+.view-room-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.view-room-preview {
+    padding: 20px;
+}
+
+.room-background-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.artwork-overlay {
+    position: absolute;
+    width: 40%;
+    height: auto;
+    cursor: move;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    transition: all 0.3s ease;
+}
+
+.artwork-overlay.small {
+    width: 30%;
+}
+
+.artwork-overlay.medium {
+    width: 40%;
+}
+
+.artwork-overlay.large {
+    width: 50%;
+}
+
+.artwork-image {
+    width: 100%;
+    height: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.artwork-image.black-frame {
+    border: 15px solid #333;
+    padding: 5px;
+    background: #fff;
+}
+
+.artwork-image.white-frame {
+    border: 15px solid #fff;
+    padding: 5px;
+    background: #f5f5f5;
+}
+
+.artwork-image.wood-frame {
+    border: 15px solid #8B4513;
+    padding: 5px;
+    background: #A0522D;
+}
+
+.artwork-image.gold-frame {
+    border: 15px solid #D4AF37;
+    padding: 5px;
+    background: #FFD700;
+}
+
+.room-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-outline-pink {
+    color: #e83e8c;
+    border-color: #e83e8c;
+}
+
+.btn-outline-pink:hover {
+    background-color: #e83e8c;
+    color: white;
+}
+
+.artwork-details {
+    padding: 20px;
+    background: #f9f9f9;
+    height: 100%;
+}
+
+.artist-name {
+    color: #777;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.size-controls .btn-group {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.size-controls .btn {
+    border-color: #ddd;
+}
+
+.size-controls .btn.active {
+    background-color: #e83e8c;
+    color: white;
+    border-color: #e83e8c;
+}
+
+.frame-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.frame-option {
+    cursor: pointer;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.frame-option:hover, .frame-option.active {
+    background-color: rgba(232, 62, 140, 0.1);
+}
+
+.frame-option.active {
+    border: 1px solid #e83e8c;
+}
+
+.frame-preview {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 5px;
+    background-color: #f5f5f5;
+    border: 2px solid #ddd;
+}
+
+.frame-preview.no-frame {
+    border: 2px dashed #999;
+}
+
+.frame-preview.black-frame {
+    border: 10px solid #333;
+}
+
+.frame-preview.white-frame {
+    border: 10px solid #fff;
+    background-color: #333;
+}
+
+.frame-preview.wood-frame {
+    border: 10px solid #8B4513;
+    background-color: #A0522D;
+}
+
+.frame-preview.gold-frame {
+    border: 10px solid #D4AF37;
+    background-color: #333;
+}
+
+.artwork-thumbnails {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.artwork-thumbnail {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.artwork-thumbnail:hover, .artwork-thumbnail.active {
+    border-color: #e83e8c;
+}
+
+.artwork-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.action-buttons {
+    margin-top: 20px;
+}
+
+.btn-pink {
+    background-color: #e83e8c;
+    color: white;
+}
+
+.btn-pink:hover {
+    background-color: #d81b60;
+    color: white;
+}
+
+.room-options {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.room-style-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.room-style {
+    cursor: pointer;
+    text-align: center;
+    width: 120px;
+}
+
+.room-style img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.room-style:hover img {
+    border-color: #e83e8c;
+}
+
+.room-style span {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Related artworks */
+.artwork-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    margin-bottom: 20px;
+}
+
+.artwork-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.artwork-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.artwork-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s;
+}
+
+.artwork-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.artwork-card:hover .artwork-overlay {
+    opacity: 1;
+}
+
+.artwork-details {
+    padding: 15px;
+}
+
+.artwork-details h5 {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.artist {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.price {
+    font-weight: bold;
+    color: #e83e8c;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .view-room-container {
+        flex-direction: column;
+    }
+    
+    .room-background-container {
+        height: 300px;
+    }
+    
+    .artwork-overlay.medium {
+        width: 60%;
+    }
+    
+    .artwork-overlay.small {
+        width: 50%;
+    }
+    
+    .artwork-overlay.large {
+        width: 70%;
+    }
+    
+    .room-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .room-style-options {
+        gap: 10px;
+    }
+    
+    .room-style {
+        width: 100px;
+    }
+}
