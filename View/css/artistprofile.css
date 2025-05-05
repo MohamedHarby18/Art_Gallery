@@ -1,0 +1,177 @@
+/* Artist Profile Specific Styles */
+.artist-section {
+    padding: 80px 0 40px;
+    background: #f9f9f9;
+}
+
+.artist-header {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.artist-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.artist-name {
+    color: #a81c51;
+    margin-top: 20px;
+}
+
+.artist-location {
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.artist-social a {
+    color: #555;
+    font-size: 20px;
+    margin: 0 8px;
+    transition: all 0.3s ease;
+}
+
+.artist-social a:hover {
+    color: #a81c51;
+}
+
+.artist-bio {
+    line-height: 1.8;
+    margin: 20px 0;
+}
+
+.artist-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.stat-item {
+    padding: 0 15px;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #a81c51;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #777;
+    text-transform: uppercase;
+}
+
+.artist-tabs {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.artist-tabs .nav-link {
+    color: #555;
+    font-weight: 500;
+    border: none;
+    padding: 12px 20px;
+    margin-right: 5px;
+}
+
+.artist-tabs .nav-link.active {
+    color: #a81c51;
+    border-bottom: 3px solid #a81c51;
+    background: transparent;
+}
+
+.artist-tabs .nav-link:hover {
+    color: #a81c51;
+    border-bottom: 3px solid #a81c51;
+}
+
+.artwork-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.artwork-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.artwork-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.artwork-details {
+    padding: 20px;
+}
+
+.artwork-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.artwork-price {
+    color: #a81c51;
+    font-weight: bold;
+}
+
+.artwork-medium {
+    color: #777;
+    font-size: 14px;
+}
+
+.exhibition-item {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.exhibition-date {
+    color: #a81c51;
+    font-weight: bold;
+}
+
+.exhibition-title {
+    font-weight: 500;
+    margin: 5px 0;
+}
+
+.exhibition-location {
+    color: #777;
+}
+
+.contact-form .form-control {
+    height: 45px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.contact-form textarea.form-control {
+    height: 120px;
+}
+
+.btn-contact {
+    background: #a81c51;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-contact:hover {
+    background: #8e1643;
+}
