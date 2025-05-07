@@ -1,0 +1,9 @@
+
+
+CREATE TABLE cart (
+  cartID int NOT NULL PRIMARY KEY,
+  userID int DEFAULT NULL,
+  artworkID int DEFAULT NULL,
+  FOREIGN KEY (userID) REFERENCES users (idUSER) ON DELETE SET NULL,
+  FOREIGN KEY ( artworkID) REFERENCES artworks (artworkID) ON DELETE SET NULL
+)
