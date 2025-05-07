@@ -11,6 +11,7 @@
 	<link href="css/cart.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz@9..144&display=swap" rel="stylesheet">
 	<script src="js/bootstrap.bundle.min.js"></script>
+	
 
 </head>
 <body>
@@ -88,6 +89,17 @@
  </div>
 </section>
 
+<?php
+function calculateSubtotal($cartItems) {
+    $subtotal = 0;
+    foreach ($cartItems as $item) {
+        $subtotal += $item['price'] * $item['quantity'];
+    }
+    return number_format($subtotal, 2);
+}
+?>
+
+
 <section id="cart_page" class="cart pt-4 pb-4">
  <div class="container-xl">
    <div class="cart_2 row">
@@ -128,7 +140,7 @@
 	 <div class="col-md-4">
 	  <div class="cart_3r">
 	   <h6 class="head_1">SUBTOTAL</h6>
-	   <h5 class="text-center col_pink mt-3">$1,347.00</h5>
+	   <h5 class="text-center col_pink mt-3">$<?php echo calculateSubtotal($cartItems); ?></h5>
 	   <hr>
 	   <h6 class="font_13">Additional comments</h6>
 	   <textarea class="form-control"></textarea>
@@ -251,24 +263,9 @@
    </div>
  </div>
 </section>
+<script src="js/main.js"></script>
 
-<script>
-window.onscroll = function() {myFunction()};
 
-var navbar_sticky = document.getElementById("navbar_sticky");
-var sticky = navbar_sticky.offsetTop;
-var navbar_height = document.querySelector('.navbar').offsetHeight;
-
-function myFunction() {
-  if (window.pageYOffset >= sticky + navbar_height) {
-    navbar_sticky.classList.add("sticky")
-	document.body.style.paddingTop = navbar_height + 'px';
-  } else {
-    navbar_sticky.classList.remove("sticky");
-	document.body.style.paddingTop = '0'
-  }
-}
-</script>
 
 </body>
 
