@@ -1,5 +1,5 @@
 <?php
-$connection = new mysqli("localhost", "root", "", "art_gallery");
+$connection = new mysqli("localhost", "root", "", "artgallery");
 
 if ($connection->connect_error) {
     echo "Error in connection: " . $connection->connect_error;
