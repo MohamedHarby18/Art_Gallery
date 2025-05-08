@@ -89,15 +89,7 @@
  </div>
 </section>
 
-<?php
-function calculateSubtotal($cartItems) {
-    $subtotal = 0;
-    foreach ($cartItems as $item) {
-        $subtotal += $item['price'] * $item['quantity'];
-    }
-    return number_format($subtotal, 2);
-}
-?>
+
 
 
 <section id="cart_page" class="cart pt-4 pb-4">
@@ -140,7 +132,7 @@ function calculateSubtotal($cartItems) {
 	 <div class="col-md-4">
 	  <div class="cart_3r">
 	   <h6 class="head_1">SUBTOTAL</h6>
-	   <h5 class="text-center col_pink mt-3">$<?php echo calculateSubtotal($cartItems); ?></h5>
+	   <h5 class="text-center col_pink mt-3">$1522</h5>
 	   <hr>
 	   <h6 class="font_13">Additional comments</h6>
 	   <textarea class="form-control"></textarea>

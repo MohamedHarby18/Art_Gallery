@@ -1,18 +1,13 @@
 <?php
-	include __DIR__ . '/includes/header.html';
-try {
-    $con = require_once('../Controller/controlDB.php');
-    
-    if (!$con) {
-        throw new Exception("Database connection failed");
-    }
-    
-    
-} catch (Exception $e) {
-    error_log('Connection error: ' . $e->getMessage());
-    echo '<div class="alert alert-danger">We\'re experiencing technical difficulties. Please try again later.</div>';
+$connection = new mysqli("localhost", "root", "", "art_gallery");
+
+if ($connection->connect_error) {
+    echo "Error in connection: " . $connection->connect_error;
+} else {
+    echo "Connected";
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

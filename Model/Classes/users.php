@@ -3,6 +3,7 @@ enum Role {
     case Customer;
     case Artist;
     case Advisor;
+    case Admin;
 }
 
 abstract class User
