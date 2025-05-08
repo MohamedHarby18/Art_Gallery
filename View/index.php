@@ -17,8 +17,8 @@
 
 <body>
 <!--nav Start -->
-	<?php
-	include __DIR__ . '/includes/header.html';
+	<?php	
+		include __DIR__ . '/includes/header.php';	
 	?>
 <!--nav end -->
 	<div class="main_2 clearfix">
