@@ -7,7 +7,6 @@ if ($connection->connect_error) {
     echo "Connected";
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
