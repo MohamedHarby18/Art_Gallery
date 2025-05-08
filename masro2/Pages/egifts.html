@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Sevillana&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            main: '#DDDDCC',
+                            secondary:"#827f6c",
+                            
+                        },
+                        container: {
+                            center: true,
+                            padding: {
+                                DEFAULT: '.75rem',
+                                sm: '1.25rem',
+                            },
+                        }
+                    }
+                }
+            }
+    </script>
+    <link rel="stylesheet" href="../CSS/style.css"/>
+    <title>eGifts</title>
+</head>
+<body class="bg-main">
+    <header class="bg-main py-3 border-b border-b-black sticky z-50 top-0">
+    <div class="container flex justify-around items-center">
+        <a href="../index.php" class="logo text-2xl sm:text-3xl md:text-4xl flex-1">
+            <span>ArtGallery</span>
+        </a>
+        <nav class="flex-1 hidden md:block">
+            <ul class="flex justify-around list-none">
+                <li>
+                    <a class="block lg:text-lg p-2 relative group" href="../App/login.php">
+                        <span class="absolute left-[50%] translate-x-[-50%] top-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
+                        <span class="absolute left-[50%] translate-x-[-50%] bottom-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
+
+
+                    Login
+                    <span class="absolute top-[50%] translate-y-[-50%] left-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                    <span class="absolute top-[50%] translate-y-[-50%] right-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                </a>
+            </li>
+            <li>
+                <a class="block lg:text-lg p-2 relative group" href="../App/signup.php">
+                    <span class="absolute left-[50%] translate-x-[-50%] top-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
+                    <span class="absolute left-[50%] translate-x-[-50%] bottom-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
+                    Signup
+                    <span class="absolute top-[50%] translate-y-[-50%] left-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                    <span class="absolute top-[50%] translate-y-[-50%] right-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="flex-1 burger-menu">
+        <div class="group h-4 cursor-pointer flex flex-col justify-between align-middle">
+            <div class="w-8 h-[2px] ms-auto bg-black scale-x-[calc(4/4)] origin-right"></div>
+            <div class="w-8 h-[2px] ms-auto bg-black scale-x-[calc(3/4)] origin-right group-hover:translate-x-[-25%] transition"></div>
+            <div class="w-8 h-[2px] ms-auto bg-black scale-x-[calc(2/4)] origin-right group-hover:translate-x-[-50%] transition"></div>
+        </div>
+    </div>
+    <div class="menu fixed overflow-x-hidden bg-secondary w-screen overflow-y-auto h-screen top-0 right-0 translate-x-[100%]">
+        <div class="close-menu absolute top-5 right-5 p-4 cursor-pointer z-20">
+            <div class="w-8 h-[1px] relative">
+                <div class="w-0 h-[1px]  bg-white absolute top-[50%] left-[50%] origin-center translate-x-[-50%] translate-y-[-50%] rotate-90"></div>
+                <div class="w-0 h-[1px]  bg-white absolute top-[50%] left-[50%] origin-center translate-x-[-50%] translate-y-[-50%] rotate-90"></div>
+            </div>
+        </div>
+        <nav class="w-full h-full relative z-10 min-h-[500px] flex items-center justify-center">
+            <ul class="text-white text-center text-xl capitalize flex flex-col gap-4 font-bold">
+                <li class="py-2"><a href="products.php">
+                        Products
+                    </a></li>
+                <li class="py-2"><a href="pages/events.php">
+                        events
+                    </a></li>
+                <li class="py-2"><a href="pages/events.php">
+                        events
+                    </a></li>
+                <li class="py-2"><a href="pages/contact.php">
+                        Contact Us
+                    </a></li>
+                <li class="py-2"><a class="flex items-center text-xl" href="pages/cart.php">
+                        <ion-icon class="me-2 text-3xl" name="cart-sharp"></ion-icon> cart [ <?= Cart::$count ?> ]
+                    </a></li>
+                <li class="py-2 md:hidden"><a href="contact.php">
+                        Signup
+                    </a></li>
+                <li class="py-2 md:hidden"><a href="contact.php">
+                        Login
+                        <span class="absolute top-[50%] translate-y-[-50%] left-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                        <span class="absolute top-[50%] translate-y-[-50%] right-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="block lg:text-lg p-2 relative group" href="about.php">
+                        <span class="absolute left-[50%] translate-x-[-50%] top-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
+                        <span class="absolute left-[50%] translate-x-[-50%] bottom-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
+                        Signup
+                        <span class="absolute top-[50%] translate-y-[-50%] left-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                        <span class="absolute top-[50%] translate-y-[-50%] right-0 w-[2px] h-6 rounded-lg scale-y-100 group-hover:scale-y-0 bg-black transition"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="flex-1 burger-menu">
+            <div class="group h-4 cursor-pointer flex flex-col justify-between align-middle">
+                <div class="w-8 h-[2px] ms-auto bg-black scale-x-[calc(4/4)] origin-right"></div>
+                <div class="w-8 h-[2px] ms-auto bg-black scale-x-[calc(3/4)] origin-right group-hover:translate-x-[-25%] transition"></div>
+                <div class="w-8 h-[2px] ms-auto bg-black scale-x-[calc(2/4)] origin-right group-hover:translate-x-[-50%] transition"></div>
+            </div>
+        </div>
+        <div class="menu fixed overflow-x-hidden bg-secondary w-screen overflow-y-auto h-screen top-0 right-0 translate-x-[100%]">
+            <div class="close-menu absolute top-5 right-5 p-4 cursor-pointer z-20">
+                <div class="w-8 h-[1px] relative">
+                    <div class="w-0 h-[1px]  bg-white absolute top-[50%] left-[50%] origin-center translate-x-[-50%] translate-y-[-50%] rotate-90"></div>
+                    <div class="w-0 h-[1px]  bg-white absolute top-[50%] left-[50%] origin-center translate-x-[-50%] translate-y-[-50%] rotate-90"></div>
+                </div>
+            </div>
+            <nav class="w-full h-full relative z-10 min-h-[500px] flex items-center justify-center">
+                <ul class="text-white text-center text-xl capitalize flex flex-col gap-4 font-bold">
+                    <li class="py-2"><a href="products.php">
+                            Products
+                        </a></li>
+                    <li class="py-2"><a href="events.php">
+                            events
+                        </a></li>
+                    <li class="py-2"><a href="events.php">
+                            events
+                        </a></li>
+                    <li class="py-2"><a href="contact.php">
+                            Contact Us
+                        </a></li>
+                    <li class="py-2"><a class="flex items-center text-xl" href="./pages/cart.php">
+                            <ion-icon class="me-2 text-3xl" name="cart-sharp"></ion-icon> cart [ <?= Cart::$count ?> ]
+                        </a></li>
+                    <li class="py-2 md:hidden"><a href="contact.php">
+                            Signup
+                        </a></li>
+                    <li class="py-2 md:hidden"><a href="contact.php">
+                            Login
+                        </a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    </div>
+    </header>
+
+<main>
+        <div class="container mt-48">
+            <div class="head">
+                <h1 class="text-7xl mb-3">Art eGift Cards</h1>
+                <p class="text-xl ">Give the gift of art with a Saatchi Art gift card. Select a value, personalize it with your message, and have it emailed to a friend or loved one immediately. It's the perfect present for any special occasion!</p>
+            </div>
+            <div class="content flex mt-10">
+                    <div class="card rounded-md bg-white" style="max-width: 450px; overflow: hidden;">
+                        <img src="../Images/hero-bg02.jpg" alt="">
+                        <div class="txt p-4 flex justify-between items-center">
+                            <h3 class="logo text-3xl">ArtGallery</h3>
+                            <p class="text-2xl"><span>$</span> price</p>
+                        </div>
+                    </div>
+                    <div class="price">
+                        <form action="" method="">
+                            
+                        </form>
+                    </div>
+            </div>
+        </div>
+</main>
+
+<footer class="p-4 bg-main md:px-6 md:py-8 border-t border-t-black">
+		<div class="sm:flex sm:items-center sm:justify-between">
+			<a href="../index.php"  class="logo flex items-center mb-4 sm:mb-0 text-2xl sm:text-3xl md:text-4xl flex-1">
+				ArtGallery
+			</a>
+			<ul class="flex flex-wrap items-center mb-6 sm:mb-0 text-gray-900">
+				<li>
+					<a href="#" class="mr-4 text-sm  hover:underline md:mr-6">About</a>
+				</li>
+				<li>
+					<a href="#" class="mr-4 text-sm  hover:underline md:mr-6">Privacy
+						Policy</a>
+				</li>
+				<li>
+					<a href="#"
+						class="mr-4 text-sm  hover:underline md:mr-6">Licensing</a>
+				</li>
+				<li>
+					<a href="#" class="text-sm  hover:underline">Contact</a>
+				</li>
+			</ul>
+		</div>
+		<hr class="my-6  sm:mx-auto border-gray-700 lg:my-8" />
+		<span class="block text-sm  sm:text-center text-gray-600">© 2024 <a href="#" class="hover:underline">Team</a>. All Rights Reserved.
+    </span>
+</footer>
+<!-- <?php require_once("../Partials/scripts.php") ?> -->
+<script src="../JS/main.js"></script>
+</body>
+</html>

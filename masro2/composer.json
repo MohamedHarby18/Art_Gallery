@@ -1,0 +1,22 @@
+{
+    "name": "yousef/art-gallery",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./App/"            
+        }
+    },
+    "authors": [
+        {
+            "name": "youseffswd",
+            "email": "yousef.sayed.work@gmail.com"
+        },
+        {
+            "name":"AbdullahAhmed",
+            "email":"abdallahsherdy@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "mpdf/mpdf": "^8.2"
+    }
+}
