@@ -16,33 +16,11 @@ display art gallery
 <body class="theme-classic">
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-light bg-white" id="navbar_sticky">
-    <div class="container-xl">
-        <a class="navbar-brand fs-2 p-0 fw-bold" href="index.html"><i class="fa fa-paint-brush col_pink me-1 align-middle"></i> VIRTUAL <span class="col_pink span_1">GALLERY</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-0 ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="galleries.html">Galleries</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="create-gallery.html">Create Gallery</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="artists.html">Artists</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	<!--nav Start -->
+	<?php
+	include __DIR__ . '/includes/header.html';
+	?>
+	<!--nav end -->
 
 <!-- Gallery Hero Section -->
 <section class="gallery-hero">

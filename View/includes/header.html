@@ -1,4 +1,5 @@
 <!-- Head section (add Font Awesome if not already included) -->
+
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
@@ -52,116 +53,69 @@
   </style>
 </head>
 
-<!-- Navbar section -->
-<div class="main_1 clearfix position-absolute top-0 w-100">
-  <section id="header">
-    <nav class="navbar navbar-expand-md navbar-light" id="navbar_sticky">
-      <div class="container-xl">
-        <a class="navbar-brand fs-2 p-0 fw-bold text-white" href="index.html">
-          <i class="fa fa-pencil col_pink me-1 align-middle"></i> art
-          <span class="col_pink span_1">WEB</span> <br>
-          <span class="font_12 span_2">DIGITAL ART</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+<body>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <!--  Search Bar  -->
-          <div class="search-wrapper ms-md-3 mt-3 mt-md-0">
-            <input type="text" id="searchInput" placeholder="Search for art, artists, or gifts..." />
-            <button onclick="performSearch()">
-              <i class="fas fa-search"></i>
+
+  <!-- Navbar section -->
+  <div class="main clearfix position-relative">
+    <div class="main_1 clearfix position-absolute top-0 w-100">
+      <section id="header">
+        <nav class="navbar navbar-expand-md navbar-light" id="navbar_sticky">
+          <div class="container-xl">
+            <a class="navbar-brand fs-2 p-0 fw-bold text-white" href="../index.php"><i
+                class="fa fa-pencil col_pink me-1 align-middle"></i> Arteon <span class="col_pink span_1">WEB</span>
+              <br>
+              <span class="font_12 span_2">ARTS</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
             </button>
-          </div>
-          <div id="searchResults"></div>
-
-          <!---->
-          <ul class="navbar-nav mb-0 ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="about.html">About </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="about.html">Art Advisor</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false"> Product </a>
-              <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="product.html"> Product</a></li>
-                <li><a class="dropdown-item border-0" href="../egift.html"> egift</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false"> Blog </a>
-              <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="blog.html"> Blog</a></li>
-                <li><a class="dropdown-item border-0" href="blog_detail.html"> Blog Detail</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false"> Pages </a>
-              <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item border-0" href="checkout.html"> Checkout</a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
-            </li>
-          </ul>
-
-          
-        </div>
-        <a class="dropdown-item" href="cart.html"> <i class="fa-solid fa-cart-shopping"></i></a>
-      </div>
-    </nav>
-  </section>
-</div>
-
-<!-- Search Function -->
-<script>
-  function performSearch() {
-    const query = document.getElementById("searchInput").value;
-    fetch(`../Controller/searchController.php?query=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                displayResults(data.data);
-            } else {
-                alert(data.message || 'No results found.');
-            }
-        })
-        .catch(err => {
-            console.error('Error:', err);
-        });
-  }
-  function displayResults(results) {
-    const container = document.getElementById('searchResults');
-    container.innerHTML = ''; // Clear previous results
-
-    if (results.length === 0) {
-        container.innerHTML = '<p>No results found.</p>';
-        return;
-    }
-
-    results.forEach(item => {
-        const div = document.createElement('div');
-        div.classList.add('artwork-card'); 
-        div.innerHTML = `
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
-            <p><strong>Category:</strong> ${item.catagory}</p>
-            <p><strong>Price:</strong> $${item.price}</p>
-        `;
-        container.appendChild(div);
-    });
-}
-
-</script>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-0 ms-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../index.php">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../events.php">Events</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      All Arts
+                    </a>
+                    <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="../product.php"> </a></li>
+                      <li><a class="dropdown-item border-0" href="#"> Paintings</a></li>
+                      <li><a class="dropdown-item border-0" href="#"> Sculptures</a></li>
+                      <li><a class="dropdown-item border-0" href="#"> Photography</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../artadvisor.php">Art Advisor</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../egift.php">eGft</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../contact.php">contact</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../about.php">About US</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../customer.php">My Accont</a>
+                  </li>
+                  <li class="nav-item">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../cart.php"><i class="fa fa-shopping-cart"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+      </section>
+    </div>
+  </div>
+</body>
