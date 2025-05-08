@@ -16,11 +16,70 @@
 </head>
 
 <body>
-<!--nav Start -->
-	<?php	
-		include __DIR__ . '/includes/header.html';	
-	?>
-<!--nav end -->
+  <!-- Navbar section -->
+  <div class="main clearfix position-relative">
+    <div class="main_1 clearfix position-absolute top-0 w-100">
+      <section id="header">
+        <nav class="navbar navbar-expand-md navbar-light" id="navbar_sticky">
+          <div class="container-xl">
+            <a class="navbar-brand fs-2 p-0 fw-bold text-white" href="../index.php">
+              <i class="fa fa-pencil col_pink me-1 align-middle"></i> Arteon 
+              <span class="col_pink span_1">WEB</span><br>
+              <span class="font_12 span_2">ARTS</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mb-0 ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="index.php">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="events.php">Events</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    All Arts
+                  </a>
+                  <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="product.php">All Products</a></li>
+                    <li><a class="dropdown-item border-0" href="#">Paintings</a></li>
+                    <li><a class="dropdown-item border-0" href="#">Sculptures</a></li>
+                    <li><a class="dropdown-item border-0" href="#">Photography</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="artadvisor.php">Art Advisor</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="egift.php">eGift</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="contact.php">Contact</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.php">About Us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="customer.php">My Account</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="cart.php"><i class="fa fa-shopping-cart"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </section>
+    </div>
+  </div>
+<!--end nav-->
 	<div class="main_2 clearfix">
 		<section id="center" class="center_home">
 			<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
@@ -1207,142 +1266,6 @@
 				</div>
 			</div>
 
-		</div>
-	</section>
-
-	<section id="bloh_h" class="p_4">
-		<div class="container-fluid">
-			<div class="row port_1 text-center mb-4">
-				<div class="col-md-12">
-					<h1 class="font_60">BLOG</h1>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
-					<span class="icon_line col_pink"><i class="fa fa-square-o"></i></span>
-				</div>
-			</div>
-			<div class="row bloh_h1">
-				<div class="col-md-6 p-0">
-					<div class="bloh_h1l">
-						<div id="carouselExampleCaptions1" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<img src="img/14.jpg" class="d-block w-100" alt="...">
-								</div>
-								<div class="carousel-item">
-									<img src="img/15.jpg" class="d-block w-100" alt="...">
-								</div>
-							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="bloh_h1r text-center">
-						<h1 class="font_50">ACRYLIC</h1>
-						<p class="mt-3"><span class="fw-bold">Acrylic painting</span>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film.</p>
-						<h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">VIEW GALLERY</span></a></h6>
-					</div>
-				</div>
-			</div>
-			<div class="row bloh_h1">
-				<div class="col-md-6">
-					<div class="bloh_h1r text-center">
-						<h1 class="font_50">ENCAUSTIC</h1>
-						<p class="mt-3"><span class="fw-bold">Other painting</span>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film.</p>
-						<h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">VIEW GALLERY</span></a></h6>
-					</div>
-				</div>
-				<div class="col-md-6 p-0">
-					<div class="bloh_h1l">
-						<div id="carouselExampleCaptions2" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<img src="img/16.jpg" class="d-block w-100" alt="...">
-								</div>
-								<div class="carousel-item">
-									<img src="img/17.jpg" class="d-block w-100" alt="...">
-								</div>
-							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row bloh_h1">
-				<div class="col-md-6 p-0">
-					<div class="bloh_h1l">
-						<div id="carouselExampleCaptions3" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<img src="img/18.jpg" class="d-block w-100" alt="...">
-								</div>
-								<div class="carousel-item">
-									<img src="img/19.jpg" class="d-block w-100" alt="...">
-								</div>
-							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions3" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions3" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="bloh_h1r text-center">
-						<h1 class="font_50">OIL PAINTING</h1>
-						<p class="mt-3"><span class="fw-bold">Acrylic painting</span>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film.</p>
-						<h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">VIEW GALLERY</span></a></h6>
-					</div>
-				</div>
-			</div>
-			<div class="row bloh_h1">
-				<div class="col-md-6">
-					<div class="bloh_h1r text-center">
-						<h1 class="font_50">IMPASTO</h1>
-						<p class="mt-3"><span class="fw-bold">Other painting</span>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film.</p>
-						<h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">VIEW GALLERY</span></a></h6>
-					</div>
-				</div>
-				<div class="col-md-6 p-0">
-					<div class="bloh_h1l">
-						<div id="carouselExampleCaptions4" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<img src="img/20.jpg" class="d-block w-100" alt="...">
-								</div>
-								<div class="carousel-item">
-									<img src="img/21.jpg" class="d-block w-100" alt="...">
-								</div>
-							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</section>
 

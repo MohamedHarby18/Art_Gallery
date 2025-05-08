@@ -15,11 +15,6 @@
 </head>
 
 <body>
-	<!--nav Start -->
-	<?php
-	include __DIR__ . '/includes/header.html';
-	?>
-	<!--nav end -->
 
 	<section id="center" class="center_o bg_gray pt-2 pb-2">
 		<div class="container-xl">
@@ -31,7 +26,7 @@
 				</div>
 				<div class="col-md-7">
 					<div class="center_o1r text-end">
-						<h6 class="mb-0"><a href="#">Home</a> <span class="me-2 ms-2"><i class="fa fa-caret-right"></i></span> Contact</h6>
+						<h6 class="mb-0"><a href="index.php">Home</a> <span class="me-2 ms-2"><i class="fa fa-caret-right"></i></span> Contact</h6>
 					</div>
 				</div>
 			</div>
