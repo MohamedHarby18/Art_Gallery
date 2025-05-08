@@ -1,3 +1,18 @@
+<?php
+	include __DIR__ . '/includes/header.html';
+try {
+    $con = require_once('../Controller/controlDB.php');
+    
+    if (!$con) {
+        throw new Exception("Database connection failed");
+    }
+    
+    
+} catch (Exception $e) {
+    error_log('Connection error: ' . $e->getMessage());
+    echo '<div class="alert alert-danger">We\'re experiencing technical difficulties. Please try again later.</div>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,65 +30,9 @@
 </head>
 <body>
 <div class="main clearfix position-relative">
- <div class="main_1 clearfix position-absolute top-0 w-100">
-   <section id="header">
-<nav class="navbar navbar-expand-md navbar-light" id="navbar_sticky">
-  <div class="container-xl">
-    <a class="navbar-brand fs-2 p-0 fw-bold text-white" href="index.html"><i class="fa fa-pencil col_pink me-1 align-middle"></i> art <span class="col_pink span_1">WEB</span> <br> <span class="font_12 span_2">DIGITAL ART</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mb-0 ms-auto">
-	    
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-        </li>
-		<li class="nav-item">
-          <a class="nav-link" href="about.html">About </a>
-        </li>
-		
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Product
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="product.html"> Product</a></li>
-            <li><a class="dropdown-item border-0" href="detail.html"> Product Detail</a></li>
-          </ul>
-        </li>
-		
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Blog
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="blog.html"> Blog</a></li>
-            <li><a class="dropdown-item border-0" href="blog_detail.html"> Blog Detail</a></li>
-          </ul>
-        </li>
-		
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Pages
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="cart.html"> Shopping Cart</a></li>
-            <li><a class="dropdown-item border-0" href="checkout.html"> Checkout</a></li>
-          </ul>
-        </li>
-				
-		<li class="nav-item">
-          <a class="nav-link" href="contact.html">Contact</a>
-        </li>
-		
-      </ul>
-    </div>
-  </div>
-</nav>
-</section>
-
- </div>
+	
+	
+	
  <div class="main_2 clearfix">
    <section id="center" class="center_home">
  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
@@ -133,7 +92,7 @@
   <div class="row port_1 text-center">
     <div class="col-md-12">
 	  <h1 class="font_60">PORTFOLIO</h1>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+	  <p>Nor is there anyone who loves or pursues pain itself, because it is pain...</p>
 	  <span class="icon_line col_pink"><i class="fa fa-square-o"></i></span>
 	</div>
   </div>
@@ -1404,7 +1363,7 @@
   <div class="row port_1 text-center mb-4">
     <div class="col-md-12">
 	  <h1 class="font_60">FRAMES</h1>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+	  <p>Let there be pain itself; may it cling to the chosen elite, but they might...</p>
 	  <span class="icon_line col_pink"><i class="fa fa-square-o"></i></span>
 	</div>
   </div>
@@ -1636,7 +1595,7 @@
   <div class="row port_1 text-center mb-4">
     <div class="col-md-12">
 	  <h1 class="font_60">ABOUT US</h1>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+	  <p>Let there be pain itself, let it be loved by the foremost elite, but they may...</p>
 	  <span class="icon_line col_pink"><i class="fa fa-square-o"></i></span>
 	</div>
   </div>
@@ -1653,11 +1612,11 @@
    <div class="col-md-6">
      <div class="about_h1r">
 	  <h1>A LITTLE INTRO</h1>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
+	  <p>Pain itself should be important, let it be loved by the main people, but they may fall into times of toil and great sorrow. For he who seeks the smallest things, let him exercise his labor to take advantage of the things that follow. He will flee the pain of those who accuse him of pleasures, as if it were the pain of life itself.</p>
 	  <h1 class="mt-4">MY EXHIBITIONS</h1>
-	  <p>Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Lorem ipsum dolor quis nostrud exercitation ullamco</p>
+	  <p>Let it be pain, let it cling to the chosen elite, but let them labor in time to endure great toil and sorrow. For he should come to the smallest wind, 'Lorem ipsum pain'—let him strive with the strength of his arms.</p>
 	  <h1 class="mt-4">NEWSLETTER</h1>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+	  <p>Pain itself, it is important, it is to be followed by the main adipisicing elite, but they do occaecat time and vitality, such as labor and sorrow. For he wishes to obtain any advantage from it, nor do they exercise labor unless they derive some benefit from it.</p>
 	  <div class="input-group mt-4">
 				<input type="text" class="form-control" placeholder="Email">
 				<span class="input-group-btn">
@@ -1671,131 +1630,9 @@
  </div>
 </section>
 
-<section id="footer" class="pt-3 pb-3">
- <div class="container-fluid">
-   <div class="row footer_1">
-    <div class="col-md-3">
-	 <div class="footer_1i">
-	  <hr class="line_1">
-	  <h5 class="mb-3">ABOUT</h5>
-	  <p>Phasellus et nisl tellus. Etiam facilisis eu nisi scelerisque faucibus. Proin semper suscipit magna, nec imperdiet lacus semper vitae. Sed hendrerit enim non justo posuere placerat eget purus mauris.</p>
-	  <p>Etiam facilisis eu nisi scelerisque faucibus. Proin semper suscipit magna, nec imperdiet lacus semper.</p>
-	 </div>
-	</div>
-	<div class="col-md-3">
-	 <div class="footer_1i">
-	  <hr class="line_1">
-	  <h5 class="mb-3">RECENT WORKS</h5>
-	  <div class="footer_1i1 row">
-	   <div class="col-md-4 col-4 p-0">
-	    <div class="footer_1i1i">
-		  <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/30.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-		</div>
-	   </div>
-	   <div class="col-md-4 col-4 p-0">
-	    <div class="footer_1i1i">
-		  <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/31.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-		</div>
-	   </div>
-	   <div class="col-md-4 col-4 p-0">
-	    <div class="footer_1i1i">
-		  <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/32.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-		</div>
-	   </div>
-	  </div>
-	  <div class="footer_1i1 row">
-	   <div class="col-md-4 col-4 p-0">
-	    <div class="footer_1i1i">
-		  <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/33.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-		</div>
-	   </div>
-	   <div class="col-md-4 col-4 p-0">
-	    <div class="footer_1i1i">
-		  <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/34.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-		</div>
-	   </div>
-	   <div class="col-md-4 col-4 p-0">
-	    <div class="footer_1i1i">
-		  <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/35.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-		</div>
-	   </div>
-	  </div>
-	 </div>
-	</div>
-	<div class="col-md-3">
-	 <div class="footer_1i">
-	  <hr class="line_1">
-	  <h5 class="mb-3">TAG CLOUD</h5>
-	   <ul class="mb-0">
-	    <li class="d-inline-block"><a class="d-block" href="#">Analyze</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Audio</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Blog</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Business</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Creative</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Design</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Experiment</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">News</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Expertize</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Express</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Share</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Sustain</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Video</a></li>
-		<li class="d-inline-block"><a class="d-block" href="#">Youtube</a></li>
-	   </ul>
-	 </div>
-	</div>
-	<div class="col-md-3">
-	 <div class="footer_1i">
-	  <hr class="line_1">
-	  <h5 class="mb-3">RECENT NEWS</h5>
-	   <p class="font_14 mb-2"><a href="#">INTEGER AT DIAM GRAVIDA FRINGILLA NIBH PRETI PURUS</a></p>
-	  <h6 class="col_light font_14"><i class="fa fa-clock-o col_pink me-1"></i> May 18 <a class="col_light" href="#"><i class="fa fa-comment-o col_pink me-1 ms-3"></i> 2</a></h6>
-	  <hr>
-	   <p class="font_14 mb-2"><a href="#">DONEC QUIS EX VEL TINCIDUNT</a></p>
-	  <h6 class="col_light font_14"><i class="fa fa-clock-o col_pink me-1"></i> July 19 <a class="col_light" href="#"><i class="fa fa-comment-o col_pink me-1 ms-3"></i> 2</a></h6>
-	  <hr>
-	  <p class="font_14 mb-2"><a href="#">PRAESENT IACULIS TORTOR VIVERRA</a></p>
-	  <h6 class="col_light font_14"><i class="fa fa-clock-o col_pink me-1"></i> June 17 <a class="col_light" href="#"><i class="fa fa-comment-o col_pink me-1 ms-3"></i> 2</a></h6>
-	 </div>
-	</div>
-   </div>
-   <div class="row footer_2 mt-4 text-center">
-    <div class="col-md-12">
-	 <ul>
-	  <li class="d-inline-block me-3 font_14"><a href="#">CONTACT</a></li>
-	  <li class="d-inline-block me-3 font_14"><a href="#">PRIVACY POLICY</a></li>
-	  <li class="d-inline-block me-3 font_14"><a href="#">TERMS OF USE</a></li>
-	  <li class="d-inline-block font_14"><a href="#">FAQ</a></li>
-	 </ul>
-	 <p class="mb-0">© 2013 Your Website Name. All Rights Reserved | Design by <a class="col_pink" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
-	</div>
-   </div>
- </div>
-</section>
+<?php
+	include __DIR__ . '/includes/footer.html';
+	?>
 
 <script>
 window.onscroll = function() {myFunction()};
