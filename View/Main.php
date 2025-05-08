@@ -1,3 +1,11 @@
+<?php
+if (class_exists('mysqli')) {
+    echo "mysqli is available!";
+} else {
+    echo "mysqli is NOT available.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +23,6 @@
 <body>
 
     <!-- FOOTER -->
-    <?php
-    include 'footer.html';
-    ?>
     <!-- JS Link Sheet -->
     <script src="Assets/js/main.js"></script>
     <!-- bootstrap JS Link Sheet -->
