@@ -151,7 +151,7 @@ while ($row = $artworksResult->fetch_assoc()) {
                             <?php endforeach; ?>
                         </div>
                     </div>
-                    <a class="go-to transition overflow-hidden hover:text-white isolate relative block my-10 bg-transparent border-2 border-gray-900 text-gray-900 font-bold text-sm rounded-lg w-fit px-10 py-3 mx-auto text-center" href="/art-gallery/Pages/products.php">Go to Shop</a>
+                    <a class="go-to transition overflow-hidden hover:text-white isolate relative block my-10 bg-transparent border-2 border-gray-900 text-gray-900 font-bold text-sm rounded-lg w-fit px-10 py-3 mx-auto text-center" href="/art_gallery/Pages/products.php">Go to Shop</a>
                 </div>
             </section>
         <?php endif; ?>
@@ -180,7 +180,7 @@ while ($row = $artworksResult->fetch_assoc()) {
                             </div>
                         <?php endforeach; ?>
                     </div>
-                    <a class="go-to transition overflow-hidden hover:text-white isolate relative block my-10 bg-transparent border-2 border-gray-900 text-gray-900 font-bold text-sm rounded-lg w-fit px-10 py-3 mx-auto text-center" href="/art-gallery/Pages/events.php">Go to Events</a>
+                    <a class="go-to transition overflow-hidden hover:text-white isolate relative block my-10 bg-transparent border-2 border-gray-900 text-gray-900 font-bold text-sm rounded-lg w-fit px-10 py-3 mx-auto text-center" href="/art_gallery/Pages/events.php">Go to Events</a>
 
                 </div>
             </section>
@@ -228,7 +228,7 @@ while ($row = $artworksResult->fetch_assoc()) {
                             <?php endforeach; ?>
                         </div>
                     </div>
-                    <a class="go-to transition overflow-hidden hover:text-white isolate relative block my-10 bg-transparent border-2 border-gray-900 text-gray-900 font-bold text-sm rounded-lg w-fit px-10 py-3 mx-auto text-center" href="/art-gallery/Pages/products.php">Go to Shop</a>
+                    <a class="go-to transition overflow-hidden hover:text-white isolate relative block my-10 bg-transparent border-2 border-gray-900 text-gray-900 font-bold text-sm rounded-lg w-fit px-10 py-3 mx-auto text-center" href="/art_gallery/Pages/products.php">Go to Shop</a>
 
                 </div>
             </section>

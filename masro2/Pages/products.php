@@ -1,6 +1,6 @@
 <?php
 $root = $_SERVER['DOCUMENT_ROOT'];
-$base = $root . '/Art-Gallery';
+$base = $root . '/art_gallery';
 require $base . '/vendor/autoload.php';
 require_once '../App/connection.php';
 
@@ -240,7 +240,7 @@ if (isset($_GET['search'])) {
                                 <?php echo $artwork['Title'] ?></h3>
                             <p  class="product-price my-3 font-bold text-gray-800">
                                 $<?php echo $artwork['Price'] ?></p>
-                            <a href="/art-gallery/Pages/ProductPreview.php?product_id=<?php echo $artwork['ArtworkID'] ?>" class="btn py-2 px-4 rounded-xl block hover:opacity-70 transition bg-black text-white text-sm font-bold ">View</a>
+                            <a href="/art_gallery/Pages/ProductPreview.php?product_id=<?php echo $artwork['ArtworkID'] ?>" class="btn py-2 px-4 rounded-xl block hover:opacity-70 transition bg-black text-white text-sm font-bold ">View</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

@@ -21,7 +21,7 @@ if(isset($_POST['refer'])){
     $email = $_POST['emailrefer'];
     $userid = isset($_SESSION['userId'])? $_SESSION['userId'] :$_COOKIE['userid'];
     $subject = 'Referal';
-    $body = 'You have been refered by  to join our  <a href="http://localhost/art-gallery/index.php">Website</a>';
+    $body = 'You have been refered by  to join our  <a href="http://localhost/art_gallery/index.php">Website</a>';
     Admin::sendEmial($email, $subject, $body);
     $sql = "INSERT INTO referrals(UserID,ReferredUserEmail) VALUES('$userid','$email')";
     mysqli_query($con,$sql);

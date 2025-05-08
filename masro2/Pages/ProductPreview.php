@@ -1,6 +1,6 @@
 <?php
 $root = $_SERVER['DOCUMENT_ROOT'];
-$base = $root . '/Art-Gallery';
+$base = $root . '/art_Gallery';
 require $base . '/vendor/autoload.php';
 if(!isset($_SESSION['userId']) && !isset($_COOKIE['userid']))
 {
@@ -161,7 +161,7 @@ if(!isset($_SESSION['userId']) && !isset($_COOKIE['userid']))
         <div class="Egift-Section">
 
             <!-- 
-            Egift here not displayed from DB but there's an Avialable Egift in our Art-gallery
+            Egift here not displayed from DB but there's an Avialable Egift in our art_gallery
             10% -> discount
             20% -> discount 
             30% -> discount

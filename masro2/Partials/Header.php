@@ -12,14 +12,14 @@ if (isset($_SESSION["userId"])) {
 
 <header class="bg-main py-3 border-b border-b-black sticky z-50 top-0">
     <div class="container flex justify-around items-center">
-        <a href="/art-gallery/" class="logo text-2xl sm:text-3xl md:text-4xl flex-1">
+        <a href="/art_gallery/" class="logo text-2xl sm:text-3xl md:text-4xl flex-1">
             <span>ArtGallery</span>
         </a>
         <?php if (!$isLoggedIn) : ?>
             <nav class="flex-1 hidden md:block">
                 <ul class="flex justify-around list-none">
                     <li>
-                        <a class="block lg:text-lg p-2 relative group" href="/art-gallery/Pages/login.php">
+                        <a class="block lg:text-lg p-2 relative group" href="/art_gallery/Pages/login.php">
                             <span class="absolute left-[50%] translate-x-[-50%] top-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
                             <span class="absolute left-[50%] translate-x-[-50%] bottom-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
 
@@ -30,7 +30,7 @@ if (isset($_SESSION["userId"])) {
                         </a>
                     </li>
                     <li>
-                        <a class="block lg:text-lg p-2 relative group" href="/art-gallery/Pages/signup.php">
+                        <a class="block lg:text-lg p-2 relative group" href="/art_gallery/Pages/signup.php">
                             <span class="absolute left-[50%] translate-x-[-50%] top-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
                             <span class="absolute left-[50%] translate-x-[-50%] bottom-0 w-full h-[2px] rounded-lg scale-x-0 group-hover:scale-x-100 bg-black transition"></span>
                             Signup
@@ -57,28 +57,28 @@ if (isset($_SESSION["userId"])) {
             </div>
             <nav class="w-full h-full relative z-10 min-h-[500px] flex items-center justify-center">
                 <ul class="text-white text-center text-xl capitalize flex flex-col gap-4 font-bold">
-                    <li class="py-2"><a href="/art-gallery/Pages/products.php">
+                    <li class="py-2"><a href="/art_gallery/Pages/products.php">
                             Products
                         </a></li>
-                    <li class="py-2"><a href="/art-gallery/Pages/events.php">
+                    <li class="py-2"><a href="/art_gallery/Pages/events.php">
                             events
                         </a></li>
-                    <li class="py-2"><a href="/art-gallery/Pages/contact.php">
+                    <li class="py-2"><a href="/art_gallery/Pages/contact.php">
                             Contact Us
                         </a></li>
-                    <li class="py-2"><a class="flex items-center text-xl" href="/art-gallery/Pages/cart.php">
+                    <li class="py-2"><a class="flex items-center text-xl" href="/art_gallery/Pages/cart.php">
                             <ion-icon class="me-2 text-3xl" name="cart-sharp"></ion-icon> cart [ <?= Cart::$count ?> ]
                         </a></li>
 
                     <?php if (!$isLoggedIn) : ?>
-                        <li class="py-2 md:hidden"><a href="/art-gallery/Pages/signup.php">
+                        <li class="py-2 md:hidden"><a href="/art_gallery/Pages/signup.php">
                                 Signup
                             </a></li>
-                        <li class="py-2 md:hidden"><a href="/art-gallery/Pages/login.php">
+                        <li class="py-2 md:hidden"><a href="/art_gallery/Pages/login.php">
                                 Login
                             </a></li>
                     <?php else: ?>
-                        <li class="py-2"><a href="/art-gallery/Pages/signout.php">
+                        <li class="py-2"><a href="/art_gallery/Pages/signout.php">
                             Signout
                         </a></li>
                     <?php endif ?>

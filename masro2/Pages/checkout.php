@@ -188,7 +188,7 @@ $invoicehtml = '
 							<!-- Row start -->
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-									<a href="http://localhost/art-gallery/index.php" class="invoice-logo">
+									<a href="http://localhost/art_gallery/index.php" class="invoice-logo">
 										ArtGallery.com
 									</a>
 								</div>

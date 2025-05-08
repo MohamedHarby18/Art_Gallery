@@ -29,6 +29,6 @@
                 }
             }
     </script>
-    <link rel="stylesheet" href="/art-gallery/CSS/style.css" />
+    <link rel="stylesheet" href="/art_gallery/CSS/style.css" />
     <title>Art Gallery</title>
 </head>

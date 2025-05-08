@@ -1,6 +1,6 @@
 <?php
 $root = $_SERVER['DOCUMENT_ROOT'];
-$base = $root . '/Art-Gallery';
+$base = $root . '/art_Gallery';
 require_once $base . '/vendor/autoload.php';
 require_once '../App/connection.php';
 

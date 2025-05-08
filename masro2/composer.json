@@ -1,5 +1,5 @@
 {
-    "name": "yousef/art-gallery",
+    "name": "yousef/art_gallery",
     "autoload": {
         "psr-4": {
             "App\\": "./App/"            
