@@ -16,9 +16,9 @@ try {
         $sql = "
             SELECT artworkID, title, [description], catagory, price, rate, [image], artistID
             FROM artworks
-            WHERE 
-                title LIKE :query OR 
-                [description] LIKE :query OR 
+            WHERE
+                title LIKE :query OR
+                [description] LIKE :query OR
                 catagory LIKE :query
             ORDER BY rate DESC
             LIMIT 10

@@ -2,12 +2,12 @@
 	include __DIR__ . '/includes/header.html';
 try {
     $con = require_once('../Controller/controlDB.php');
-    
+
     if (!$con) {
         throw new Exception("Database connection failed");
     }
-    
-    
+
+
 } catch (Exception $e) {
     error_log('Connection error: ' . $e->getMessage());
     echo '<div class="alert alert-danger">We\'re experiencing technical difficulties. Please try again later.</div>';
@@ -30,9 +30,9 @@ try {
 </head>
 <body>
 <div class="main clearfix position-relative">
-	
-	
-	
+
+
+
  <div class="main_2 clearfix">
    <section id="center" class="center_home">
  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
@@ -49,7 +49,7 @@ try {
 		 <h4 class="text-white mt-3">Photography</h4>
 		 <p class="text-white mt-4">The beauty of a woman is not in a facial mode but the true beauty in a woman is reflected in her soul. It is the caring that she lovingly gives the passion that she shows. The beauty of a woman grows with the passing years.</p>
 		 <h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">Back to overview</span></a></h6>
-		
+
       </div>
     </div>
     <div class="carousel-item">
@@ -59,7 +59,7 @@ try {
 		 <h4 class="text-white mt-3">Photography</h4>
 		 <p class="text-white mt-4">The beauty of a woman is not in a facial mode but the true beauty in a woman is reflected in her soul. It is the caring that she lovingly gives the passion that she shows. The beauty of a woman grows with the passing years.</p>
 		 <h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">Back to overview</span></a></h6>
-		
+
       </div>
     </div>
     <div class="carousel-item">
@@ -69,7 +69,7 @@ try {
 		 <h4 class="text-white mt-3">Photography</h4>
 		 <p class="text-white mt-4">The beauty of a woman is not in a facial mode but the true beauty in a woman is reflected in her soul. It is the caring that she lovingly gives the passion that she shows. The beauty of a woman grows with the passing years.</p>
 		 <h6 class="mt-4 mb-0"><a class="button" href="#"><i class="fa fa-bullhorn bg-white col_pink p-3"> </i> <span class="ps-3 pe-3">Back to overview</span></a></h6>
-		
+
       </div>
     </div>
   </div>
@@ -84,7 +84,7 @@ try {
 </div>
 </section>
  </div>
- 
+
 </div>
 
 <section id="port" class="p_4">
@@ -148,12 +148,12 @@ try {
 		  <li class="d-inline-block fs-5"><a data-bs-target="#exampleModal" data-bs-toggle="modal" href="#"><i class="fa fa-search"></i></a></li>
 		 </ul>
 	   </div>
-	   
+
 	   <div class="folio_1im3  p-3 position-absolute bottom-0  text-center w-100 clearfix">
 	     <h6><a class="text-light" data-bs-target="#exampleModal" data-bs-toggle="modal" href="#">MASTER PIECE</a></h6>
 		 <h6 class="mb-0 text-white font_14">People, Still Life</h6>
 	   </div>
-		
+
 	  </div>
 	       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
 		  <div class="modal-dialog">

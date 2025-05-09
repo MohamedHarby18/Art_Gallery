@@ -7,7 +7,7 @@ class DBcontroller
     public $dbPassword = "";
     public $dbName = "artgallery";
     public $connection;
-    
+
     public function openConnection() {
         try {
             $this->connection = new PDO(
@@ -17,12 +17,13 @@ class DBcontroller
             );
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->connection;
+
         } catch(PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
             return null;
         }
     }
-    
+
     public function closeConnection() {
         $this->connection = null;
     }

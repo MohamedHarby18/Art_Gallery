@@ -1,3 +1,19 @@
+<?php
+// login.php
+require_once '../Controller/controlDB.php'; // Includes session_start()
+
+// Check if user is already logged in
+if (isset($_SESSION['user_id'])) {
+    // header('Location: account.php'); // Redirect to account page or dashboard
+    // For now, let's redirect to index.html or a generic logged-in page
+    // header('Location: index.html');
+    // exit;
+}
+///whatisthis
+$errors = $_SESSION['errors'] ?? [];
+$old_input = $_SESSION['old_input'] ?? [];
+unset($_SESSION['errors'], $_SESSION['old_input']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +27,10 @@
     <link href="css/index.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz@9..144&display=swap" rel="stylesheet">
-   
+    <style>
+        .error-message { color: red; font-size: 0.9em; margin-top: 5px; }
+        .form-group { margin-bottom: 1.2rem; /* Increased margin */ }
+    </style>
 </head>
 <body>
 <div class="main clearfix position-relative">
@@ -43,9 +62,21 @@
         <li class="nav-item">
           <a class="nav-link" href="contact.html">Contact</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="login.html">Login</a>
-        </li>
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="account.php">Account</a> <!-- Link to user account page -->
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">Logout</a>
+          </li>
+        <?php else: ?>
+          <li class="nav-item">
+            <a class="nav-link active" href="login.php">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="registration.php">Register</a>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>
@@ -80,15 +111,24 @@
                     <h3 class="mb-0">SIGN IN</h3>
                 </div>
                 <div class="login-body">
-                    <form id="loginForm">
+                    <?php if (isset($_SESSION['success_message'])): ?>
+                        <div class="alert alert-success"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></div>
+                    <?php endif; ?>
+                    <?php if (!empty($errors['general'])): ?>
+                        <div class="alert alert-danger"><?php echo htmlspecialchars($errors['general']); ?></div>
+                    <?php endif; ?>
+
+                    <form id="loginForm" action="process_login.php" method="POST">
                         <div class="form-group">
-                            <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                            <input type="email" class="form-control <?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="Email Address" value="<?php echo htmlspecialchars($old_input['email'] ?? ''); ?>" required>
+                            <?php if (isset($errors['email'])): ?><div class="error-message invalid-feedback d-block"><?php echo htmlspecialchars($errors['email']); ?></div><?php endif; ?>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <input type="password" class="form-control <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>" id="password" name="password" placeholder="Password" required>
+                            <?php if (isset($errors['password'])): ?><div class="error-message invalid-feedback d-block"><?php echo htmlspecialchars($errors['password']); ?></div><?php endif; ?>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="remember">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember" <?php echo isset($old_input['remember']) ? 'checked' : ''; ?>>
                             <label class="form-check-label" for="remember">Remember me</label>
                         </div>
                         <button type="submit" class="btn btn-login">LOGIN</button>
@@ -96,7 +136,7 @@
                         <div class="login-links">
                             <a href="forgot-password.html">Forgot password?</a>
                             <span class="mx-2">|</span>
-                            <a href="register.html">Create account</a>
+                            <a href="registration.php">Create account</a>
                         </div>
                         
                         <div class="divider">
@@ -118,7 +158,7 @@
  </div>
 </section>
 
-<!-- Footer Section -->
+<!-- Footer Section (same as before) -->
 <section id="footer" class="pt-3 pb-3">
  <div class="container-fluid">
    <div class="row footer_1">
@@ -248,44 +288,39 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Form submission
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const remember = document.getElementById('remember').checked;
-        
-        // Simple validation
-        if (!email || !password) {
-            alert('Please fill in all fields');
-            return;
-        }
-        
-        // In a real implementation, this would send to your authentication system
-        console.log('Login attempt with:', { email, password, remember });
-        
-        // Simulate successful login
-        alert('Login successful! Redirecting...');
-        // window.location.href = 'account.html';
-    });
+    // Client-side form validation (optional)
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            // Basic client-side checks
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // if (!email || !password) {
+            //     alert('Please fill in all fields'); // Handled by 'required'
+            //     e.preventDefault(); 
+            // }
+            // Form will submit to process_login.php if not prevented
+        });
+    }
     
     // Sticky navbar (from your original JS)
     window.onscroll = function() {myFunction()};
 
     var navbar_sticky = document.getElementById("navbar_sticky");
-    var sticky = navbar_sticky.offsetTop;
-    var navbar_height = document.querySelector('.navbar').offsetHeight;
+    if (navbar_sticky) { // Check if navbar_sticky exists
+        var sticky = navbar_sticky.offsetTop;
+        var navbar_height = document.querySelector('.navbar').offsetHeight;
 
-    function myFunction() {
-      if (window.pageYOffset >= sticky + navbar_height) {
-        navbar_sticky.classList.add("sticky")
-        document.body.style.paddingTop = navbar_height + 'px';
-      } else {
-        navbar_sticky.classList.remove("sticky");
-        document.body.style.paddingTop = '0'
-      }
+        function myFunction() {
+          if (window.pageYOffset >= sticky + navbar_height) {
+            navbar_sticky.classList.add("sticky")
+            document.body.style.paddingTop = navbar_height + 'px';
+          } else {
+            navbar_sticky.classList.remove("sticky");
+            document.body.style.paddingTop = '0'
+          }
+        }
     }
 });
 </script>
