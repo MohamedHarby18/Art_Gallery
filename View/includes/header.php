@@ -1,9 +1,8 @@
 <!-- Head section (add Font Awesome if not already included) -->
+
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
-<body>
   <!-- Navbar section -->
   <div class="main clearfix position-relative">
     <div class="main_1 clearfix position-absolute top-0 w-100">
@@ -25,10 +24,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mb-0 ms-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="../index.php">Home</a>
+                  <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../events.php">Events</a>
+                  <a class="nav-link" href="events.php">Events</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -36,29 +35,26 @@
                     All Arts
                   </a>
                   <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="../product.php">All Products</a></li>
+                    <li><a class="dropdown-item" href="product.php">All Products</a></li>
                     <li><a class="dropdown-item border-0" href="#">Paintings</a></li>
                     <li><a class="dropdown-item border-0" href="#">Sculptures</a></li>
                     <li><a class="dropdown-item border-0" href="#">Photography</a></li>
                   </ul>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../artadvisor.php">Art Advisor</a>
+                  <a class="nav-link" href="artadvisor.php">Art Advisor</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../egift.php">eGift</a>
+                  <a class="nav-link" href="egift.php">eGift</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../contact.php">Contact</a>
+                  <a class="nav-link" href="contact.php">Contact</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../about.php">About Us</a>
+                  <a class="nav-link" href="customer.php">My Account</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../customer.php">My Account</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../cart.php"><i class="fa fa-shopping-cart"></i></a>
+                  <a class="nav-link" href="cart.php"><i class="fa fa-shopping-cart"></i></a>
                 </li>
               </ul>
             </div>
@@ -68,4 +64,3 @@
     </div>
   </div>
 <!--end nav-->
-</body>
