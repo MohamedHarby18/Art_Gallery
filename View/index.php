@@ -1483,7 +1483,7 @@
 	</section>
 
 	<?php
-	include __DIR__ . '/includes/footer.html';
+	include __DIR__ . './includes/footer.php';
 	?>
 
 	<script>
