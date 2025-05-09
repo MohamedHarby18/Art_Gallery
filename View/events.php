@@ -86,37 +86,9 @@ $allEvents = getEventsByCategory($db);
             <?php endforeach; ?>
           </div>
         </div>
-
-
-      <!-- Past Events Section -->
-      <div class="row mt-5">
-        <div class="col-md-12">
-          <h2 class="font_40 text-center mb-4">PAST EVENTS</h2>
-          <div class="past-events-slider">
-            <?php
-            // Get past events (assuming you have a way to determine past events)
-            $currentDate = date('Y-m-d');
-            $pastEvents = $db->select("SELECT * FROM events WHERE Date < ? ORDER BY Date ASC LIMIT 9", [$currentDate]);
-            
-            foreach ($pastEvents as $event): 
-              $eventDate = new DateTime($event['Date']);
-              $formattedDate = $eventDate->format('F j, Y');
-            ?>
-            <div class="past-event">
-              <img src="<?php echo htmlspecialchars($event['Image']); ?>" alt="<?php echo htmlspecialchars($event['Title']); ?>">
-              <div class="past-event-overlay">
-                <h4><?php echo htmlspecialchars($event['Title']); ?></h4>
-                <p><?php echo $formattedDate; ?></p>
-              </div>
-            </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
       </div>
     </div>
   </section>
-
   <script src="js/main.js"></script>
-
 </body>
 </html>
