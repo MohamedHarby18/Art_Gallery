@@ -71,12 +71,9 @@ if (empty($_POST["phone"])) {
     echo "ERROR:Phone number is required";
     exit;
 }
-if (!preg_match("/^[0-9]+$/", $_POST["phone"])) {
-        echo "Error: Phone number should contain only numbers.";
-        exit;
-}
-if (!preg_match("/^[0-9]{10}$/", $_POST["phone"])) {
-    echo "ERROR:Phone number must be 10 digits of numbers";
+
+if (!preg_match("/^[0-9]/", $_POST["phone"])) {
+    echo "ERROR:Phone number must be number";
     exit;
 }
 
@@ -208,7 +205,7 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-    header("Location: signup-success.html");
+    header("Location: login.php");
     exit;
 } else {
     if ($mysqli->errno === 1062) {
