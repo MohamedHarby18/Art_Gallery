@@ -25,7 +25,7 @@ if ($_POST["password"] !== $_POST["password_confirmation"]) {
 }
 if (empty($_POST["City"]) || empty($_POST["Address"])) {
     die("City and Address are required");
-    
+ 
 }
 $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
