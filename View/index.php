@@ -1,3 +1,41 @@
+<?php
+      $mysqli = require __DIR__ . "/../Controller/controlDBauth.php";
+      session_start();
+
+
+// Check if user is logged in via session
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit;
+}
+
+
+// Get user data from the database
+$userID = $_SESSION["user_id"];
+$sql = "SELECT Artist, Advisor FROM users WHERE UserID = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("i", $userID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    // User ID not found in DB
+    header("Location: registration.php");
+    exit;
+}
+
+$user = $result->fetch_assoc();
+
+// Role-based redirection
+if ($user["Artist"] == 1) {
+    header("Location: artistprofile.php");
+    exit;
+} elseif ($user["Advisor"] == 1) {
+    header("Location: artadvisor.php");
+    exit;
+} 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
