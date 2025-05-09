@@ -1,12 +1,12 @@
 <?php
-// // registration.php
-// // require_once '..\Controller\controlDBauth.php'; // Includes session_start()
+// // registration.html
+// // require_once '..\Controller\controlDBauth.html'; // Includes session_start()
 
 // // Check if user is already logged in, if so, redirect to a different page (e.g., account page)
 // if (isset($_SESSION['user_id'])) {
-//     // header('Location: account.php'); // Uncomment and create account.php if you have one
-//     // For now, let's redirect to index.php or a generic logged-in page
-//     // header('Location: index.php'); // Or index.php if you convert it
+//     // header('Location: account.html'); // Uncomment and create account.html if you have one
+//     // For now, let's redirect to index.html or a generic logged-in page
+//     // header('Location: index.html'); // Or index.html if you convert it
 //     // exit;
 // }
 
@@ -348,7 +348,7 @@ document.getElementById("registerForm").addEventListener("submit", function(e) {
         if (data.startsWith("ERROR:")) {
             errorDiv.innerText = data.replace("ERROR:", "");
         } else if (data === "SUCCESS") {
-            window.location.href = "login.php";
+            window.location.href = "signup-success.php";
         } else {
             errorDiv.innerText = "Unexpected response: " + data;
         }
@@ -412,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
-            // Basic client-side checks can remain, but PHP handles actual validation
+            // Basic client-side checks can remain, but html handles actual validation
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const email = document.getElementById('email').value;
@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // if (!isValid) {
             //     e.preventDefault(); // Prevent form submission if client validation fails
             // }
-            // Form will submit to process_register.php if not prevented by e.preventDefault()
+            // Form will submit to process_register.html if not prevented by e.preventDefault()
         });
     }
     
