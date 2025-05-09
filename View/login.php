@@ -21,10 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo '<!DOCTYPE html>
                 <html>
                 <head>
-                    <meta http-equiv="refresh" content="3;url=index.php">
+                    <meta http-equiv="refresh" content="1;url=index.php">
                 </head>
                 <body>
-                    ✅ Login successful! Redirecting to homepage in 3 seconds...
+                    ✅ Login successful! Redirecting to homepage ...
                 </body>
                 </html>';
             exit;
