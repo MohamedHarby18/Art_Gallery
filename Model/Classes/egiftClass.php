@@ -1,21 +1,22 @@
 <?php
-require_once __DIR__ . '/../../Controller/DBController.php';
+// require_once __DIR__ . '/../../Controller/DBController.php'; // Path seems okay from your previous files
 
 class EGift
 {
     private $db;
-    private $ID;
-    private $customerSenderID;
-    protected $receiverEmail;
-    protected $receiverName;
-    private $value;
+    private $ID;                // Maps to CardID in DB
+    private $customerSenderID;  // Maps to UserID in DB
+    protected $receiverEmail;   // Maps to RecipientEmail in DB
+    // private $receiverName; // REMOVED PROPERTY
+    private $value;             // Maps to Amount in DB
 
-    public function __construct(DBController $db, $ID, $customerSenderID, $receiverEmail = '', $receiverName = '', $value = 0) {
+    // Constructor MODIFIED: $receiverName parameter removed
+    public function __construct(DBController $db, $ID, $customerSenderID, $receiverEmail = '', $value = 0) {
         $this->db = $db;
         $this->ID = $ID;
         $this->customerSenderID = $customerSenderID;
         $this->receiverEmail = $receiverEmail;
-        $this->receiverName = $receiverName;
+        // $this->receiverName = $receiverName; // REMOVED
         $this->value = $value;
     }
 
@@ -35,17 +36,17 @@ class EGift
         $this->receiverEmail = $email;
     }
 
-    public function getReceiverName() {
-        return $this->receiverName;
-    }
-
     public function getReceiverEmail() {
         return $this->receiverEmail;
     }
 
-    public function setReceiverName($name) {
-        $this->receiverName = $name;
-    }
+    // public function getReceiverName() { // REMOVED METHOD
+    //     return $this->receiverName;
+    // }
+
+    // public function setReceiverName($name) { // REMOVED METHOD
+    //     $this->receiverName = $name;
+    // }
 
     public function getID() {
         return $this->ID;
@@ -55,31 +56,39 @@ class EGift
         $this->ID = $id;
     }
 
+    // save() method MODIFIED
     public function save() {
-        $query = "INSERT INTO egiftcards (CardID, UserID, Amount, RecipientEmail, RecipientName) VALUES (?, ?, ?, ?, ?)";
+        // Query MODIFIED: RecipientName column removed
+        $query = "INSERT INTO egiftcards (CardID, UserID, Amount, RecipientEmail) VALUES (?, ?, ?, ?)";
+        // Params MODIFIED: $this->receiverName removed
         $params = [
             $this->ID,
-            $this->customerSenderID,
-            $this->value,
-            $this->receiverEmail,
-            $this->receiverName
+            $this->customerSenderID, // This should be the logged-in UserID
+            $this->value,            // This is the Amount
+            $this->receiverEmail
         ];
-        
+
+        // Assuming your DBController's insert method correctly handles parameter binding
+        // and uses types like 'sids' (string, int, double, string) for these columns.
+        // If it needs types, you might need to pass them or it infers them.
         return $this->db->insert($query, $params);
     }
 
+    // getById() method MODIFIED
     public static function getById(DBController $db, $cardId) {
-        $query = "SELECT * FROM egiftcards WHERE CardID = ?";
-        $result = $db->select($query, [$cardId]);
-        
+        // Assuming your table has CardID, UserID, Amount, RecipientEmail
+        $query = "SELECT CardID, UserID, Amount, RecipientEmail FROM egiftcards WHERE CardID = ?";
+        $result = $db->select($query, [$cardId]); // Assuming $db->select returns an array of associative arrays
+
         if ($result && count($result) > 0) {
             $data = $result[0];
+            // Constructor call MODIFIED: No receiverName argument
             return new EGift(
                 $db,
                 $data['CardID'],
                 $data['UserID'],
                 $data['RecipientEmail'],
-                $data['RecipientName'] ?? '',
+                // No RecipientName here
                 $data['Amount']
             );
         }
@@ -87,8 +96,10 @@ class EGift
     }
 
     public static function getAllByUser(DBController $db, $userId) {
-        $query = "SELECT * FROM egiftcards WHERE UserID = ? ORDER BY DateCreated DESC";
-        return $db->select($query, [$userId]);
+        // Assuming your table has CardID, UserID, Amount, RecipientEmail
+        // and potentially a DateCreated column if you want to order by it
+        $query = "SELECT CardID, UserID, Amount, RecipientEmail FROM egiftcards WHERE UserID = ? ORDER BY CardID DESC"; // Or DateCreated if it exists
+        return $db->select($query, [$userId]); // Returns array of records
     }
 }
 ?>
