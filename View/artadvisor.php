@@ -1,104 +1,192 @@
 <?php
-// Enable error reporting for debugging (remove or set to 0 for production)
+// Start session ONCE at the very beginning
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// --- Authentication and Role Check (from your existing code) ---
+$mysqli = require __DIR__ . "/../Controller/controlDBauth.php"; // For authentication
+
+// Check if user is logged in via session
+if (!isset($_SESSION["user_id"])) {
+    // If AJAX request, send JSON error, otherwise redirect
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        http_response_code(401); // Unauthorized
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in. Please log in.']);
+        exit;
+    } else {
+        header("Location: login.php"); // Redirect for direct page access
+        exit;
+    }
+}
+
+// Get user data from the database
+$loggedInUserID = $_SESSION["user_id"]; // Store this for later use in quiz
+$sql_auth = "SELECT Artist, Advisor FROM users WHERE UserID = ?";
+$stmt_auth = $mysqli->prepare($sql_auth);
+
+if ($stmt_auth === false) {
+    // Handle prepare error - critical
+    error_log("Failed to prepare auth statement: " . $mysqli->error);
+    // For AJAX, send JSON, else show generic error or redirect
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Authentication check failed.']);
+        exit;
+    } else {
+        die("An error occurred during authentication. Please try again later."); // Or redirect
+    }
+}
+
+$stmt_auth->bind_param("i", $loggedInUserID);
+$stmt_auth->execute();
+$result_auth = $stmt_auth->get_result();
+
+if ($result_auth->num_rows === 0) {
+    // User ID from session not found in DB (session might be stale or tampered)
+    session_destroy(); // Clear potentially invalid session
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        http_response_code(401);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid session. Please log in again.']);
+        exit;
+    } else {
+        header("Location: login.php?error=session_invalid");
+        exit;
+    }
+}
+
+$user_roles = $result_auth->fetch_assoc();
+$stmt_auth->close();
+// $mysqli->close(); // Close this connection if controlDBauth.php doesn't do it and DBController uses a new one.
+
+// Role-based redirection (ONLY for direct page access, NOT for POST requests)
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') { // Only redirect if it's not a POST request for the quiz
+    if ($user_roles["Artist"] == 1) {
+        header("Location: artistprofile.php");
+        exit;
+    } elseif ($user_roles["Advisor"] == 1) {
+        // User is an Advisor, they are already on artadvisor.php, so no redirect needed here.
+        // If artadvisor.php is ONLY for advisors, this is fine.
+        // If general users can access artadvisor.php, this elseif might be redundant or need adjustment.
+    } else {
+        // If the user is neither Artist nor Advisor, and this page is specifically for Advisors,
+        // you might want to redirect them or show an access denied message.
+        // For now, let's assume non-artists/non-advisors can take the quiz.
+    }
+}
+// --- End of Authentication and Role Check ---
+
+
+// --- Quiz Submission Logic ---
+// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 0); // Errors should be logged, not displayed, to keep JSON clean
 ini_set('log_errors', 1);
 // ini_set('error_log', '/path/to/your/php-error.log'); // Optional: specify error log file
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// --- Try to include DBController and initialize early to catch critical errors ---
-$db = null;
-$initializationError = null;
+$db_quiz = null; // Use a different variable name for the quiz DB connection
+$initializationError_quiz = null;
 
 try {
+    // Assuming DBController.php is for quiz data and controlDBauth.php was for user auth
     require_once '../Controller/DBController.php';
     if (class_exists('DBController')) {
-        $db = new DBController();
+        $db_quiz = new DBController(); // Initialize for quiz operations
     } else {
-        $initializationError = 'DBController class not found after inclusion.';
+        $initializationError_quiz = 'DBController class for quiz not found after inclusion.';
     }
 } catch (Throwable $e) {
-    // Throwable catches Errors and Exceptions in PHP 7+
-    $initializationError = 'Failed to load or initialize DBController: ' . $e->getMessage();
-    error_log($initializationError . " Trace: " . $e->getTraceAsString()); // Log the full error
+    $initializationError_quiz = 'Failed to load or initialize DBController for quiz: ' . $e->getMessage();
+    error_log($initializationError_quiz . " Trace: " . $e->getTraceAsString());
 }
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
-    header('Content-Type: application/json'); // Set content type for all AJAX responses
+    header('Content-Type: application/json');
 
-    if ($initializationError) {
-        http_response_code(500); // Internal Server Error
+    // Re-check login status specifically for AJAX submission
+    if (!isset($_SESSION["user_id"]) || empty($_SESSION["user_id"])) {
+        http_response_code(401); // Unauthorized
         echo json_encode([
             'status' => 'error',
-            'message' => $initializationError
+            'message' => 'User not logged in. Please log in to submit the quiz.'
+        ]);
+        exit;
+    }
+    // Use the UserID from the session established by your auth logic
+    $customerID = $_SESSION["user_id"];
+
+
+    if ($initializationError_quiz) {
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => $initializationError_quiz
         ]);
         exit;
     }
 
-    if (!$db) { // Should be caught by $initializationError, but as a safeguard
+    if (!$db_quiz) {
         http_response_code(500);
         echo json_encode([
             'status' => 'error',
-            'message' => 'Database controller is not available.'
+            'message' => 'Quiz database controller is not available.'
         ]);
         exit;
     }
 
     try {
-        // Get form data
         $colors = $_POST['selected_colors'] ?? '';
         $styles = $_POST['selected_styles'] ?? '';
         $budget = $_POST['selected_budget'] ?? '';
         $size = $_POST['selected_size'] ?? '';
 
-        // Get customer ID from session or use a default
-        // IMPORTANT: If customerID is a foreign key, '0' might cause an integrity constraint violation
-        // if there's no customer with ID 0 and the column doesn't allow NULL or have a different default.
-        $customerID = $_SESSION['customer_id'] ?? 0;
+        // $customerID is already set from $_SESSION["user_id"]
 
-        // Insert into database
         $query = "INSERT INTO quiz (customerID, color, styles, budget, size) VALUES (?, ?, ?, ?, ?)";
-        // Ensure your DBController's insert method handles parameter binding securely (e.g., prepared statements)
-        // The types here are illustrative if your DBController needs them for bind_param (e.g., 'issss')
-        $params = [$customerID, $colors, $styles, $budget, $size];
+        $params = [$customerID, $colors, $styles, $budget, $size]; // Using the actual logged-in user's ID
 
-        $insertId = $db->insert($query, $params); // Assumes insert() returns lastInsertId or false/0 on error
+        $insertId = $db_quiz->insert($query, $params);
 
         if ($insertId) {
             echo json_encode([
                 'status' => 'success',
-                'message' => 'Quiz answers saved successfully',
+                'message' => 'Quiz answers saved successfully!',
                 'quizID' => $insertId
             ]);
         } else {
-            $dbErrorMessage = 'Unknown database error.';
-            if (method_exists($db, 'getLastError')) {
-                $lastError = $db->getLastError();
+            $dbErrorMessage = 'Unknown database error during quiz save.';
+            if (method_exists($db_quiz, 'getLastError')) {
+                $lastError = $db_quiz->getLastError();
                 if (!empty($lastError)) {
                     $dbErrorMessage = $lastError;
                 }
             }
-            http_response_code(500); // Internal Server Error for DB save failure
+            // Log the specific error if possible
+            error_log("Failed to save quiz for customerID $customerID: $dbErrorMessage");
+
+            http_response_code(500);
             echo json_encode([
                 'status' => 'error',
                 'message' => 'Failed to save quiz answers: ' . $dbErrorMessage
             ]);
         }
-    } catch (Throwable $e) { // Catch any other unexpected errors during POST processing
-        error_log("Quiz submission processing error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . " Trace: " . $e->getTraceAsString());
-        http_response_code(500); // Internal Server Error
+    } catch (Throwable $e) {
+        error_log("Quiz submission processing error for customerID $customerID: " . $e->getMessage() . " Trace: " . $e->getTraceAsString());
+        http_response_code(500);
         echo json_encode([
             'status' => 'error',
-            'message' => 'An unexpected server error occurred: ' . $e->getMessage() // For dev; be cautious showing raw error messages in prod
+            'message' => 'An unexpected server error occurred while saving quiz: ' . $e->getMessage()
         ]);
     }
-    exit; // Ensure no further HTML is output after JSON
+    exit;
 }
 ?>
+
+<!-- Your HTML and JavaScript remain the same -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,17 +206,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-light bg-white" id="navbar_sticky">
     <div class="container-xl">
-        <a class="navbar-brand fs-2 p-0 fw-bold" href="index.html"><i class="fa fa-pencil col_pink me-1 align-middle"></i> ART <span class="col_pink span_1">ADVISOR</span></a>
+        <a class="navbar-brand fs-2 p-0 fw-bold" href="index.php"><i class="fa fa-pencil col_pink me-1 align-middle"></i> ART <span class="col_pink span_1">ADVISOR</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-0 ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="advisor.html">Art Advisor</a>
+                    <!-- Link to advisor.php (this page) -->
+                    <a class="nav-link active" href="artadvisor.php">Art Advisor</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -145,6 +234,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
                 </li>
+                 <!-- Add Logout Link if user is logged in -->
+                <?php if(isset($_SESSION["user_id"])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
@@ -161,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
 
 <!-- Art Advisor Quiz Section -->
 <section id="quiz" class="py-5">
-  <form id="quizForm" method="POST"> <!-- method="POST" here is fine, JS overrides with fetch -->
+  <form id="quizForm" method="POST">
     <div class="quiz-container">
       <!-- Quiz Header -->
       <div class="text-center mb-4">
@@ -242,7 +341,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
         </div>
         <div class="quiz-navigation">
           <button type="button" class="btn btn-outline-secondary prev-step">Previous</button>
-          <!-- Changed name to avoid conflict if PHP processes based on it, though JS handles submit -->
           <button type="submit" class="btn bg_pink text-white" id="submit-quiz-js" name="submit-quiz-js">Get Recommendations</button>
         </div>
       </div>
@@ -322,8 +420,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
             <div class="col-md-4 mb-4">
                 <h5>Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="index.html" class="text-white">Home</a></li>
-                    <li><a href="advisor.html" class="text-white">Art Advisor</a></li>
+                    <li><a href="index.php" class="text-white">Home</a></li>
+                    <li><a href="artadvisor.php" class="text-white">Art Advisor</a></li>
                     <li><a href="gallery.html" class="text-white">Gallery</a></li>
                     <li><a href="artists.html" class="text-white">Artists</a></li>
                     <li><a href="about.html" class="text-white">About Us</a></li>
@@ -366,7 +464,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
     <i class="fa fa-moon"></i>
 </button>
 
-<!-- JavaScript -->
+<!-- JavaScript remains the same -->
 <script src="js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -489,27 +587,32 @@ document.addEventListener('DOMContentLoaded', function () {
             hiddenSize.value = userPreferences.size;
 
             const formData = new FormData(quizForm);
-            // Add the submit button's name/value if PHP script checks for it specifically
             formData.append('submit-quiz', '1');
 
 
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
 
-            fetch('', { // POST to the current page URL
+            fetch('', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: { // Important for PHP to know it's an AJAX request
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             })
             .then(response => {
-                // Check if the response is ok (status in the range 200-299)
-                // Then, try to parse it as JSON. If parsing fails, it will also go to catch.
                 if (!response.ok) {
-                    // Try to get error message from JSON response if server sent one
                     return response.json().then(errData => {
+                         // Check for specific 401 for login issues
+                        if (response.status === 401 && errData.message) {
+                             throw new Error(errData.message); // Use server's login message
+                        }
                         throw new Error(errData.message || `Server responded with status: ${response.status}`);
-                    }).catch(() => {
-                        // If response isn't JSON or .json() fails for other reasons
-                        throw new Error(`Network response was not ok. Status: ${response.status}`);
+                    }).catch((jsonParseError) => { // If parsing JSON itself fails (e.g. server sent HTML)
+                        // Log the original parsing error for debugging
+                        console.error("JSON parsing error during fetch:", jsonParseError);
+                        // Create a more generic error
+                        throw new Error(`Network response was not ok. Status: ${response.status}. Response was not valid JSON.`);
                     });
                 }
                 return response.json();
@@ -520,21 +623,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (data.status === 'success') {
                     console.log('Quiz answers saved successfully:', data.message, 'QuizID:', data.quizID);
-                    const recommendedArtworks = getRecommendations(); // Get local recommendations for display
+                    alert('Quiz answers saved successfully!'); // Give user feedback
+                    const recommendedArtworks = getRecommendations();
                     displayResults(recommendedArtworks);
                     if (quizContainer && resultsSection) {
                         quizContainer.style.display = 'none';
                         resultsSection.style.display = 'block';
                         window.scrollTo({
-                            top: resultsSection.offsetTop - 100, // Adjust scroll offset as needed
+                            top: resultsSection.offsetTop - 100,
                             behavior: 'smooth'
                         });
                     }
                 } else {
-                    // Server responded with status: 'error' (but HTTP was OK)
                     console.error('Error saving quiz answers (from server):', data.message);
                     alert('There was an error submitting your preferences: ' + (data.message || 'Unknown server error.'));
-                    // Optionally, still show local recommendations or keep quiz visible
                 }
             })
             .catch(error => {
@@ -542,18 +644,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitButton.textContent = 'Get Recommendations';
                 console.error('Fetch processing error:', error.message);
 
-                // Fallback behavior as in original code
-                const recommendedArtworks = getRecommendations();
-                displayResults(recommendedArtworks);
-                if (quizContainer && resultsSection) {
-                    quizContainer.style.display = 'none';
-                    resultsSection.style.display = 'block';
-                    window.scrollTo({
-                        top: resultsSection.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
+                // Check if the error message indicates a login issue
+                if (error.message.toLowerCase().includes("log in") || error.message.toLowerCase().includes("logged in")) {
+                    alert(error.message + "\nYou will be redirected to the login page.");
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'login.php';
+                    }, 3000);
+                } else {
+                    // Fallback behavior for other errors
+                    const recommendedArtworks = getRecommendations();
+                    displayResults(recommendedArtworks);
+                    if (quizContainer && resultsSection) {
+                        quizContainer.style.display = 'none';
+                        resultsSection.style.display = 'block';
+                        window.scrollTo({
+                            top: resultsSection.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                    alert('Could not save your preferences to the server. Displaying local recommendations. Details: ' + error.message);
                 }
-                alert('Could not save your preferences to the server. Displaying local recommendations. Details: ' + error.message);
             });
         }
     });
@@ -564,7 +675,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function validateStep(stepIndex) {
-        // Ensure selections are made for radio-button like steps (budget, size)
         if (stepIndex === 0 && userPreferences.colors.length === 0) {
             alert('Please select at least one color preference');
             return false;
@@ -572,14 +682,12 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Please select at least one art style');
             return false;
         } else if (stepIndex === 2 && !userPreferences.budget) {
-            // Check if any budget option is selected
             const budgetSelected = Array.from(document.querySelectorAll('#step3 .quiz-option.selected')).length > 0;
-            if (!budgetSelected && !userPreferences.budget) { // Double check, userPreferences.budget should be set
+            if (!budgetSelected && !userPreferences.budget) {
                 alert('Please select a budget range');
                 return false;
             }
         } else if (stepIndex === 3 && !userPreferences.size) {
-             // Check if any size option is selected
             const sizeSelected = Array.from(document.querySelectorAll('#step4 .quiz-option.selected')).length > 0;
             if (!sizeSelected && !userPreferences.size) {
                 alert('Please select a size preference');
@@ -589,7 +697,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    function getRecommendations() { // This is still based on client-side 'artworks' array
+    function getRecommendations() {
         return artworks.filter(artwork => {
             const colorMatch = userPreferences.colors.length === 0 ? true : userPreferences.colors.some(color => artwork.tags.includes(color));
             const styleMatch = userPreferences.styles.length === 0 ? true : userPreferences.styles.some(style => artwork.tags.includes(style));
@@ -599,8 +707,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let meetsCriteria = true;
             if (userPreferences.colors.length > 0 && !colorMatch) meetsCriteria = false;
             if (userPreferences.styles.length > 0 && !styleMatch) meetsCriteria = false;
-            if (userPreferences.budget && !budgetMatch) meetsCriteria = false; // only check if budget is set
-            if (userPreferences.size && userPreferences.size !== 'any' && !sizeMatch) meetsCriteria = false; // only check if size is set and not 'any'
+            if (userPreferences.budget && !budgetMatch) meetsCriteria = false;
+            if (userPreferences.size && userPreferences.size !== 'any' && !sizeMatch) meetsCriteria = false;
 
             return meetsCriteria;
         });
@@ -619,7 +727,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         recommendedArtworks.forEach(artwork => {
             const artItem = document.createElement('div');
-            artItem.className = 'art-item'; // Ensure this class is styled for grid layout
+            artItem.className = 'art-item';
             artItem.innerHTML = `
                 <img src="${artwork.image}" alt="${artwork.title}">
                 <div class="art-info">
@@ -633,7 +741,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Theme Toggle and Sticky Navbar (unchanged)
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
         themeToggle.addEventListener('click', function () {
@@ -664,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.body.style.paddingTop = '0';
             }
         }
-        if (window.pageYOffset >= sticky) { // Apply sticky on load if already scrolled
+        if (window.pageYOffset >= sticky) {
             stickyNavbar();
         }
     }
