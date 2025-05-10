@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../Controller/controlDB.php';
+require_once __DIR__ . '/../../Controller/DBController.php';
 
 class EGift
 {
