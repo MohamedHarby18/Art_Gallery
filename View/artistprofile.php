@@ -148,7 +148,7 @@ $avgRating = $avgRating ? round($avgRating[0]['avg_rating'], 1) : 'No ratings';
                      alt="' . htmlspecialchars($artwork['Title']) . '" 
                      class="artwork-img img-fluid">
                 <div class="artwork-details mt-2">
-                    <h5 class="artwork-title">' . htmlspecialchars($artwork['Title']) . '</h5>
+                    <h5 class="artwork-title text-dark">' . htmlspecialchars($artwork['Title']) . '</h5>
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <div class="artwork-price">$' . number_format($artwork['Price'], 2) . '</div>
                         ' . $stock . '
@@ -156,7 +156,7 @@ $avgRating = $avgRating ? round($avgRating[0]['avg_rating'], 1) : 'No ratings';
                     <div class="artwork-category small text-muted mb-2">' . 
     htmlspecialchars($artwork['Catagory'] ?? 'Uncategorized') . 
 '</div>
-                    <p class="artwork-desc small">' . $description . '</p>
+                    <p class="artwork-desc text-dark small">' . $description . '</p>
                 </div>
             </div>
         </div>';
