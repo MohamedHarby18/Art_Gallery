@@ -14,7 +14,7 @@ $db = null;
 $initializationError = null;
 
 try {
-    require_once '../Controller/controlDB.php';
+    require_once '../Controller/DBController.php';
     if (class_exists('DBController')) {
         $db = new DBController();
     } else {
