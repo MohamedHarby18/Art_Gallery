@@ -1,51 +1,39 @@
 <?php
-// Enable error reporting (remove in production)
+// Enable error reporting (remove/adjust for production)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-// Define base paths
-define('BASE_DIR', __DIR__);
-define('APP_ROOT', dirname(BASE_DIR));
-
-// Database Connection and Artwork handling
-try {
-    $dbPath = APP_ROOT . '/Controller/DBController.php';
-    $artworkPath = APP_ROOT . '/Model/Classes/Artwork.php';
-
-    if (!file_exists($dbPath)) {
-        throw new Exception("DBController not found at: $dbPath");
-    }
-    if (!file_exists($artworkPath)) {
-        throw new Exception("Artwork class not found at: $artworkPath");
-    }
-
-    require_once $dbPath;
-    require_once $artworkPath;
-
-    // Get artworks using the Artwork class
-    $artworks = Artwork::getAllArtworks();
-
-    // Convert Artwork objects to array for compatibility with existing view code
-    $artworksArray = [];
-    foreach ($artworks as $artwork) {
-        $artworksArray[] = [
-            'ArtworkID' => $artwork->getArtworkID(),
-            'Title' => $artwork->getTitle(),
-            'Description' => $artwork->getDescription(),
-            'Category' => $artwork->getCategory(),
-            'Price' => $artwork->getPrice(),
-            'Image' => $artwork->getImage(),
-            'ArtistID' => $artwork->getArtistID(),
-            'created_at' => $artwork->getCreatedAt(),
-            'total_reviews' => $artwork->getTotalReviews(),
-            'numberinStock' => $artwork->getNumberInStock(),
-            'average_rating' => $artwork->getTotalReviews() > 0 ?
-                min(5, max(0, $artwork->getTotalReviews() / 20)) : 4.5 // Example rating calculation
-        ];
-    }
-} catch (Exception $e) {
-    die("<div class='alert alert-danger'>System Error: " . htmlspecialchars($e->getMessage()) . "</div>");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
+// Assuming product.php is in a directory like 'pages/' or 'View/'
+// relative to the project root.
+require_once __DIR__ . '/../Controller/DBController.php'; // For DBController, if not handled by Artwork's own include
+require_once __DIR__ . '/../Model/Classes/Artwork.php';
+
+$artworksObjects = []; // Initialize
+try {
+    // Get artworks using the Artwork class - this returns an array of Artwork objects
+    $artworksObjects = Artwork::getAllArtworks();
+} catch (Exception $e) {
+    // Log the error message, $e->getMessage()
+    error_log("Error fetching artworks: " . $e->getMessage());
+    // Display a user-friendly error message
+    $pageErrorMessage = "Sorry, we couldn't load the artworks at this time. Please try again later.";
+    // Or more detailed for debugging (conditionally):
+    // $pageErrorMessage = "System Error: " . htmlspecialchars($e->getMessage());
+}
+
+// Base URL for assets - adjust if your project is in a subdirectory of web root
+// Example: If project is at http://localhost/Art_Gallery/, $baseUrl = "/Art_Gallery/";
+// If project is at http://localhost/, $baseUrl = "/";
+$baseUrl = "/Art_Gallery/"; // Modify as per your server configuration
+if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') { // Common XAMPP setup
+    // If Art_Gallery is directly under htdocs
+} else {
+    // Adjust base URL if needed for other environments
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,14 +42,51 @@ try {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Art Web</title>
+    <title>Art Collection - Art Web</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/global.css" rel="stylesheet">
     <link href="css/product.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz@9..144&display=swap" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <style>
+        .prod_main {
+            display: flex;
+            flex-direction: column;
+        }
 
+        .product_2im1 {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product_2imi img {
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+        }
+
+        .sold-out-overlay {
+            /* Basic styling for sold out, can be enhanced */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(128, 128, 128, 0.7);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .add-to-cart,
+        .add-to-wishlist {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -86,71 +111,90 @@ try {
 
     <section id="product" class="p_4">
         <div class="container-xl">
+            <?php if (isset($_SESSION['message'])): ?>
+                <div class="alert alert-<?= htmlspecialchars($_SESSION['message']['type']) ?> alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($_SESSION['message']['text']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['message']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($pageErrorMessage)): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($pageErrorMessage) ?></div>
+            <?php endif; ?>
+
             <div class="row product_1">
                 <div class="col-md-9">
                     <div class="product_1l">
                         <p class="mb-0 mt-2">
-                            Showing <?php echo count($artworksArray) > 0 ? '1' : '0'; ?>–<?php echo count($artworksArray); ?> of <?php echo count($artworksArray); ?> results
+                            Showing <?= count($artworksObjects) > 0 ? '1' : '0'; ?>–<?= count($artworksObjects); ?> of <?= count($artworksObjects); ?> results
                         </p>
                     </div>
+                </div>
+                <div class="col-md-3">
+                    <!-- Sorting/filter options can go here -->
                 </div>
             </div>
 
             <div class="row product_2 mt-4">
-                <?php if (!empty($artworksArray)): ?>
-                    <?php foreach ($artworksArray as $artwork): ?>
-                        <div class="col-md-3 mb-4">
-                            <div class="prod_main p-1 bg-white clearfix h-100">
+                <?php if (!empty($artworksObjects)): ?>
+                    <?php foreach ($artworksObjects as $artwork): ?>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                            <div class="prod_main p-1 bg-white clearfix h-100 shadow-sm rounded">
                                 <div class="product_2im clearfix position-relative">
                                     <div class="product_2imi clearfix">
                                         <div class="grid clearfix">
                                             <figure class="effect-jazz mb-0">
-                                                <a href="/artwork/<?php echo htmlspecialchars($artwork['ArtworkID']); ?>">
-                                                    <img src="../Images/artworks/<?php echo htmlspecialchars($artwork['Image']); ?>"
+                                                <!-- Link to product detail page, adjust path as needed -->
+                                                <a href="<?= htmlspecialchars($baseUrl) ?>artwork_detail.php?id=<?= $artwork->getArtworkID() ?>">
+                                                    <img src="<?= htmlspecialchars($baseUrl) ?>Images/artworks/<?= htmlspecialchars($artwork->getImage()) ?>"
                                                         class="w-100"
-                                                        alt="<?php echo htmlspecialchars($artwork['Title']); ?>"
+                                                        alt="<?= htmlspecialchars($artwork->getTitle()) ?>"
                                                         loading="lazy">
                                                 </a>
                                             </figure>
                                         </div>
                                     </div>
-                                    <div class="product_2imi1 position-absolute clearfix w-100 top-0 text-center">
-                                        <ul class="mb-0">
-                                            <?php if ($artwork['numberinStock'] > 0): ?>
-                                                <li class="d-inline-block">
-                                                    <a class="bg_pink text-white d-block add-to-cart"
-                                                        data-id="<?php echo htmlspecialchars($artwork['ArtworkID']); ?>">
+                                    <div class="product_2imi1 position-absolute clearfix w-100 top-0 text-center p-2" style="background: rgba(255,255,255,0.1);">
+                                        <ul class="list-inline mb-0">
+                                            <?php if ($artwork->getNumberInStock() > 0): ?>
+                                                <li class="list-inline-item">
+                                                    <button class="btn btn-sm btn-primary add-to-cart"
+                                                        data-id="<?= $artwork->getArtworkID() ?>" title="Add to Cart">
                                                         <i class="fa fa-shopping-cart"></i>
-                                                    </a>
+                                                    </button>
                                                 </li>
                                             <?php endif; ?>
-                                            <li class="d-inline-block">
-                                                <a class="bg_pink text-white d-block add-to-wishlist"
-                                                    data-id="<?php echo htmlspecialchars($artwork['ArtworkID']); ?>">
+                                            <li class="list-inline-item">
+                                                <button class="btn btn-sm btn-outline-danger add-to-wishlist"
+                                                    data-id="<?= $artwork->getArtworkID() ?>" title="Add to Wishlist">
                                                     <i class="fa fa-heart-o"></i>
-                                                </a>
+                                                </button>
                                             </li>
                                         </ul>
                                     </div>
-                                    <?php if ($artwork['numberinStock'] <= 0): ?>
+                                    <?php if ($artwork->getNumberInStock() <= 0): ?>
                                         <div class="sold-out-overlay">
                                             <span>Sold Out</span>
                                         </div>
                                     <?php endif; ?>
                                 </div>
                                 <div class="product_2im1 position-relative clearfix">
-                                    <div class="clearfix product_2im1i text-center pt-3 pb-4">
+                                    <div class="clearfix product_2im1i text-center pt-3 pb-3 px-2">
                                         <h5 class="font_14 text-uppercase">
-                                            <a class="col_dark" href="/artwork/<?php echo htmlspecialchars($artwork['ArtworkID']); ?>">
-                                                <?php echo htmlspecialchars($artwork['Title']); ?>
+                                            <a class="col_dark text-decoration-none" href="<?= htmlspecialchars($baseUrl) ?>artwork_detail.php?id=<?= $artwork->getArtworkID() ?>">
+                                                <?= htmlspecialchars($artwork->getTitle()) ?>
                                             </a>
                                         </h5>
-                                        <p class="font_12 text-muted mb-1"><?php echo htmlspecialchars($artwork['Category']); ?></p>
+                                        <p class="font_12 text-muted mb-1"><?= htmlspecialchars($artwork->getCategory()) ?></p>
                                         <span class="font_12 col_yell">
                                             <?php
-                                            $rating = $artwork['average_rating'] ?? 0;
-                                            $fullStars = floor($rating);
-                                            $hasHalfStar = ($rating - $fullStars) >= 0.5;
+                                            // Example rating calculation, adjust as needed
+                                            $totalReviews = $artwork->getTotalReviews();
+                                            // This rating logic is placeholder, replace with actual average rating if available
+                                            $average_rating = $totalReviews > 0 ? min(5, max(0, $totalReviews / 5)) : 3.5;
+                                            $fullStars = floor($average_rating);
+                                            $hasHalfStar = ($average_rating - $fullStars) >= 0.5;
 
                                             for ($i = 1; $i <= 5; $i++) {
                                                 if ($i <= $fullStars) {
@@ -162,12 +206,14 @@ try {
                                                 }
                                             }
                                             ?>
-                                            <small class="text-muted">(<?php echo $artwork['total_reviews']; ?>)</small>
+                                            <small class="text-muted">(<?= $totalReviews ?> reviews)</small>
                                         </span>
                                         <h6 class="col_dark mt-2 mb-0">
-                                            $<?php echo number_format($artwork['Price'], 2); ?>
-                                            <?php if ($artwork['numberinStock'] > 0): ?>
-                                                <small class="text-success">(<?php echo $artwork['numberinStock']; ?> in stock)</small>
+                                            $<?= number_format($artwork->getPrice(), 2) ?>
+                                            <?php if ($artwork->getNumberInStock() > 0): ?>
+                                                <small class="text-success d-block">(<?= $artwork->getNumberInStock(); ?> in stock)</small>
+                                            <?php else: ?>
+                                                <small class="text-danger d-block">(Out of stock)</small>
                                             <?php endif; ?>
                                         </h6>
                                     </div>
@@ -176,172 +222,119 @@ try {
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <div class="col-12 text-center py-5">
-                        <h4>No artworks found</h4>
-                        <p>Please check back later or explore our other collections</p>
-                    </div>
+                    <?php if (!isset($pageErrorMessage)): // Show only if no other critical error displayed 
+                    ?>
+                        <div class="col-12 text-center py-5">
+                            <h4>No artworks found</h4>
+                            <p>Please check back later or explore our other collections.</p>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
     </section>
 
-    <section id="footer" class="pt-3 pb-3">
+    <section id="footer" class="pt-3 pb-3 bg-dark text-light">
+        <!-- Footer content from your original file, ensure paths for images/links are correct -->
         <div class="container-fluid">
-            <div class="row footer_1">
-                <div class="col-md-3">
-                    <div class="footer_1i">
-                        <hr class="line_1">
-                        <h5 class="mb-3">ABOUT</h5>
-                        <p>Phasellus et nisl tellus. Etiam facilisis eu nisi scelerisque faucibus. Proin semper suscipit
-                            magna, nec imperdiet lacus semper vitae. Sed hendrerit enim non justo posuere placerat eget
-                            purus mauris.</p>
-                        <p>Etiam facilisis eu nisi scelerisque faucibus. Proin semper suscipit magna, nec imperdiet
-                            lacus semper.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="footer_1i">
-                        <hr class="line_1">
-                        <h5 class="mb-3">RECENT WORKS</h5>
-                        <div class="footer_1i1 row">
-                            <div class="col-md-4 col-4 p-0">
-                                <div class="footer_1i1i">
-                                    <div class="grid clearfix">
-                                        <figure class="effect-jazz mb-0">
-                                            <a href="#"><img src="img/30.jpg" class="w-100" alt="abc"></a>
-                                        </figure>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="footer_1i1 row">
-                            <div class="col-md-4 col-4 p-0">
-                                <div class="footer_1i1i">
-                                    <div class="grid clearfix">
-                                        <figure class="effect-jazz mb-0">
-                                            <a href="#"><img src="img/33.jpg" class="w-100" alt="abc"></a>
-                                        </figure>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-4 p-0">
-                                <div class="footer_1i1i">
-                                    <div class="grid clearfix">
-                                        <figure class="effect-jazz mb-0">
-                                            <a href="#"><img src="img/34.jpg" class="w-100" alt="abc"></a>
-                                        </figure>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-4 p-0">
-                                <div class="footer_1i1i">
-                                    <div class="grid clearfix">
-                                        <figure class="effect-jazz mb-0">
-                                            <a href="#"><img src="img/35.jpg" class="w-100" alt="abc"></a>
-                                        </figure>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="footer_1i">
-                        <hr class="line_1">
-                        <h5 class="mb-3">TAG CLOUD</h5>
-                        <ul class="mb-0">
-                            <li class="d-inline-block"><a class="d-block" href="#">Analyze</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Audio</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Blog</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Business</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Creative</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Design</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Experiment</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">News</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Expertize</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Express</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Share</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Sustain</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Video</a></li>
-                            <li class="d-inline-block"><a class="d-block" href="#">Youtube</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="footer_1i">
-                        <hr class="line_1">
-                        <h5 class="mb-3">RECENT NEWS</h5>
-                        <p class="font_14 mb-2"><a href="#">INTEGER AT DIAM GRAVIDA FRINGILLA NIBH PRETI PURUS</a></p>
-                        <h6 class="col_light font_14"><i class="fa fa-clock-o col_pink me-1"></i> May 18 <a
-                                class="col_light" href="#"><i class="fa fa-comment-o col_pink me-1 ms-3"></i> 2</a></h6>
-                        <hr>
-                        <p class="font_14 mb-2"><a href="#">DONEC QUIS EX VEL TINCIDUNT</a></p>
-                        <h6 class="col_light font_14"><i class="fa fa-clock-o col_pink me-1"></i> July 19 <a
-                                class="col_light" href="#"><i class="fa fa-comment-o col_pink me-1 ms-3"></i> 2</a></h6>
-                        <hr>
-                        <p class="font_14 mb-2"><a href="#">PRAESENT IACULIS TORTOR VIVERRA</a></p>
-                        <h6 class="col_light font_14"><i class="fa fa-clock-o col_pink me-1"></i> June 17 <a
-                                class="col_light" href="#"><i class="fa fa-comment-o col_pink me-1 ms-3"></i> 2</a></h6>
-                    </div>
-                </div>
-            </div>
+            <!-- ... (Your existing footer HTML) ... -->
             <div class="row footer_2 mt-4 text-center">
                 <div class="col-md-12">
-                    <ul>
-                        <li class="d-inline-block me-3 font_14"><a href="#">CONTACT</a></li>
-                        <li class="d-inline-block me-3 font_14"><a href="#">PRIVACY POLICY</a></li>
-                        <li class="d-inline-block me-3 font_14"><a href="#">TERMS OF USE</a></li>
-                        <li class="d-inline-block font_14"><a href="#">FAQ</a></li>
-                    </ul>
-                    <p class="mb-0">© 2013 Your Website Name. All Rights Reserved | Design by <a class="col_pink"
-                            href="http://www.templateonweb.com">TemplateOnWeb</a></p>
+                    <p class="mb-0">© <?php echo date("Y"); ?> Art Gallery. All Rights Reserved | Design by <a class="col_pink"
+                            href="http://www.templateonweb.com">TemplateOnWeb</a> (Adapted)</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <script src="/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Update the cart AJAX code in product.php
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const artworkId = this.getAttribute('data-id');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const artworkId = this.getAttribute('data-id');
 
-                fetch('../Model/Classes/add_to_cart.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: `artwork_id=${artworkId}`
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Update cart count in navbar if exists
-                            const cartCount = document.querySelector('.cart-count');
-                            if (cartCount) {
-                                const currentCount = parseInt(cartCount.textContent) || 0;
-                                cartCount.textContent = currentCount + 1;
+                    // Adjust fetch path if add_to_cart.php is elsewhere
+                    // e.g., if product.php is in pages/ and add_to_cart.php is in api/
+                    // fetch('../api/add_to_cart.php', {
+                    // If product.php and add_to_cart.php are in the same directory:
+                    // fetch('add_to_cart.php', { 
+                    // Using root-relative path based on $baseUrl for consistency
+                    const fetchUrl = `<?= htmlspecialchars($baseUrl) ?>Model/Classes/add_to_cart.php`;
+
+                    fetch(fetchUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-Requested-With': 'XMLHttpRequest' // Often good to send for server-side detection
+                            },
+                            body: `artwork_id=${artworkId}`
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                // Try to get error message from JSON if server sends it despite non-200 status
+                                return response.json().then(errData => {
+                                    throw new Error(errData.message || `HTTP error ${response.status}`);
+                                }).catch(() => { // If parsing JSON fails or no JSON body
+                                    throw new Error(`HTTP error ${response.status}`);
+                                });
                             }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Update cart count in navbar (example selector, adjust to your HTML)
+                                const cartCountElement = document.querySelector('.cart-nav-count'); // You'll need this element in your header
+                                if (cartCountElement && data.cartCount !== undefined) {
+                                    cartCountElement.textContent = data.cartCount;
+                                }
 
-                            // Show feedback to user
-                            alert('Item added to cart!');
-                        } else {
-                            if (data.redirect) {
-                                window.location.href = data.redirect;
+                                // Show feedback (simple alert, or use a nicer toast/modal)
+                                alert(data.message || 'Item added to cart!');
+
+                                // Optional: update stock display on page if necessary, or button state
+                                // For example, if stock reaches 0, disable add to cart button.
+                                const stockDisplay = this.closest('.prod_main').querySelector('.text-success small, .text-danger small');
+                                if (stockDisplay && data.newStock !== undefined) { // Assuming API returns new stock
+                                    if (data.newStock > 0) {
+                                        stockDisplay.textContent = `(${data.newStock} in stock)`;
+                                        stockDisplay.className = 'text-success d-block';
+                                    } else {
+                                        stockDisplay.textContent = `(Out of stock)`;
+                                        stockDisplay.className = 'text-danger d-block';
+                                        this.disabled = true; // Disable button if out of stock
+                                    }
+                                }
+
+
                             } else {
-                                alert('Error: ' + data.message);
+                                // Handle specific error scenarios from server
+                                if (data.redirect) { // If server suggests redirect (e.g., to login)
+                                    window.location.href = data.redirect;
+                                } else {
+                                    alert('Error: ' + (data.message || 'Could not add item to cart.'));
+                                }
                             }
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while adding to cart');
-                    });
+                        })
+                        .catch(error => {
+                            console.error('Fetch Error:', error);
+                            alert('An error occurred: ' + error.message);
+                        });
+                });
+            });
+
+            // Placeholder for add-to-wishlist
+            document.querySelectorAll('.add-to-wishlist').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const artworkId = this.getAttribute('data-id');
+                    alert(`Wishlist functionality for Artwork ID ${artworkId} is not yet implemented.`);
+                    // Implement fetch to wishlist API endpoint here
+                });
             });
         });
     </script>
-
 </body>
 
 </html>

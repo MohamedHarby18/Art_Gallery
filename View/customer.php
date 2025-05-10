@@ -17,6 +17,9 @@
 <body>
 	<?php
 	include './includes/header.php';
+      $mysqli = require __DIR__ . "/../Controller/controlDBauth.php";
+      session_start();
+
 	?>
 
   <section id="profile-header" class="p_4">
@@ -42,7 +45,23 @@
               </div>
               <div class="profile-actions">
                 <button class="btn btn-outline-pink me-2"><i class="fa fa-cog me-1"></i> Edit Profile</button>
-                <button class="btn btn-pink"><i class="fa fa-sign-out me-1"></i> Logout</button>
+             
+             
+             
+              <?php if (isset($_SESSION["user_id"])): ?>
+                
+  <div class="text-end mb-3">
+    <a href="logout.php" class="btn btn-pink">
+      <i class="fa fa-sign-out me-1"></i> Logout
+    </a>
+  </div>
+<?php else: ?>
+  <a href="login.php" class="btn btn-pink">
+    <i class="fa fa-sign-in me-1"></i> Login
+  </a>
+<?php endif; ?>
+
+
               </div>
             </div>
           </div>

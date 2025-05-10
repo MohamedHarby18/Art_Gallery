@@ -404,7 +404,7 @@
                 <div class="col-md-4 mb-4">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="index.html" class="text-white">Home</a></li>
+                        <li><a href="index.php" class="text-white">Home</a></li>
                         <li><a href="my-galleries.html" class="text-white">My Galleries</a></li>
                         <li><a href="create-gallery.html" class="text-white">Create Gallery</a></li>
                         <li><a href="profile.html" class="text-white">Artist Profile</a></li>
