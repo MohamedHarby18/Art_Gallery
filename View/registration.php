@@ -348,7 +348,7 @@ document.getElementById("registerForm").addEventListener("submit", function(e) {
         if (data.startsWith("ERROR:")) {
             errorDiv.innerText = data.replace("ERROR:", "");
         } else if (data === "SUCCESS") {
-            window.location.href = "signup-success.php";
+            window.location.href = "index.php";
         } else {
             errorDiv.innerText = "Unexpected response: " + data;
         }
