@@ -187,7 +187,7 @@ display art gallery
             <div class="col-md-4 mb-4">
                 <h5>Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="index.html" class="text-white">Home</a></li>
+                    <li><a href="index.php" class="text-white">Home</a></li>
                     <li><a href="galleries.html" class="text-white">Browse Galleries</a></li>
                     <li><a href="create-gallery.html" class="text-white">Create Your Gallery</a></li>
                     <li><a href="artists.html" class="text-white">Featured Artists</a></li>

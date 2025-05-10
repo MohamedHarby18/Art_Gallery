@@ -5,8 +5,8 @@
 // // Check if user is already logged in, if so, redirect to a different page (e.g., account page)
 // if (isset($_SESSION['user_id'])) {
 //     // header('Location: account.html'); // Uncomment and create account.html if you have one
-//     // For now, let's redirect to index.html or a generic logged-in page
-//     // header('Location: index.html'); // Or index.html if you convert it
+//     // For now, let's redirect to index.php or a generic logged-in page
+//     // header('Location: index.php'); // Or index.php if you convert it
 //     // exit;
 // }
 

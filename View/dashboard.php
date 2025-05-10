@@ -20,7 +20,7 @@
         <!-- Sidebar -->
         <nav id="sidebar" class="active">
             <div class="sidebar-header">
-                <a class="navbar-brand fs-2 p-0 fw-bold text-white" href="index.html">
+                <a class="navbar-brand fs-2 p-0 fw-bold text-white" href="index.php">
                     <i class="fa fa-pencil col_pink me-1 align-middle"></i> art <span class="col_pink span_1">WEB</span>
                     <br> <span class="font_12 span_2">ADMIN PANEL</span>
                 </a>
