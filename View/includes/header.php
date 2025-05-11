@@ -50,6 +50,15 @@
                 <li class="nav-item">
                   <a class="nav-link" href="customer.php">My Account</a>
                 </li>
+                <?php if(isset($_SESSION["user_id"])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                   <a class="nav-link" href="cart.php"><i class="fa fa-shopping-cart"></i></a>
                 </li>
