@@ -146,6 +146,8 @@ class Artwork
         return $this->dbController->execute($query, [$this->ArtworkID]);
     }
 
+    
+
     // Getters
     public function getArtworkID(): int { return $this->ArtworkID; }
     public function getTitle(): string { return $this->Title; }

@@ -6,34 +6,63 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Assuming product.php is in a directory like 'pages/' or 'View/'
-// relative to the project root.
-require_once __DIR__ . '/../Controller/DBController.php'; // For DBController, if not handled by Artwork's own include
+require_once __DIR__ . '/../Controller/DBController.php';
 require_once __DIR__ . '/../Model/Classes/Artwork.php';
 
+// Initialize filter variables from GET parameters
+$categoryFilter = isset($_GET['category']) ? $_GET['category'] : null;
+$priceMinFilter = isset($_GET['price_min']) ? floatval($_GET['price_min']) : null;
+$priceMaxFilter = isset($_GET['price_max']) ? floatval($_GET['price_max']) : null;
+$inStockFilter = isset($_GET['in_stock']) ? true : false;
+
 $artworksObjects = []; // Initialize
+$allArtworks = []; // Store all artworks for filter options
 try {
-    // Get artworks using the Artwork class - this returns an array of Artwork objects
-    $artworksObjects = Artwork::getAllArtworks();
+    // Get all artworks first
+    $allArtworks = Artwork::getAllArtworks();
+    
+    // Apply filters if any are set
+    $artworksObjects = array_filter($allArtworks, function($artwork) use ($categoryFilter, $priceMinFilter, $priceMaxFilter, $inStockFilter) {
+        $matches = true;
+        
+        if ($categoryFilter && $artwork->getCategory() != $categoryFilter) {
+            $matches = false;
+        }
+        
+        if ($priceMinFilter && $artwork->getPrice() < $priceMinFilter) {
+            $matches = false;
+        }
+        
+        if ($priceMaxFilter && $artwork->getPrice() > $priceMaxFilter) {
+            $matches = false;
+        }
+        
+        if ($inStockFilter && $artwork->getNumberInStock() <= 0) {
+            $matches = false;
+        }
+        
+        return $matches;
+    });
+    
 } catch (Exception $e) {
-    // Log the error message, $e->getMessage()
     error_log("Error fetching artworks: " . $e->getMessage());
-    // Display a user-friendly error message
     $pageErrorMessage = "Sorry, we couldn't load the artworks at this time. Please try again later.";
-    // Or more detailed for debugging (conditionally):
-    // $pageErrorMessage = "System Error: " . htmlspecialchars($e->getMessage());
 }
 
-// Base URL for assets - adjust if your project is in a subdirectory of web root
-// Example: If project is at http://localhost/Art_Gallery/, $baseUrl = "/Art_Gallery/";
-// If project is at http://localhost/, $baseUrl = "/";
-$baseUrl = "/Art_Gallery/"; // Modify as per your server configuration
-if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') { // Common XAMPP setup
-    // If Art_Gallery is directly under htdocs
+// Get unique categories for filter dropdown
+$categories = [];
+if (!empty($allArtworks)) {
+    $categories = array_unique(array_map(function($artwork) {
+        return $artwork->getCategory();
+    }, $allArtworks));
+}
+
+$baseUrl = "/Art_Gallery/";
+if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') {
+    // Common XAMPP setup
 } else {
     // Adjust base URL if needed for other environments
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +96,6 @@ if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') { // Common XAMPP setup
         }
 
         .sold-out-overlay {
-            /* Basic styling for sold out, can be enhanced */
             position: absolute;
             top: 0;
             left: 0;
@@ -85,6 +113,38 @@ if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') { // Common XAMPP setup
         .add-to-cart,
         .add-to-wishlist {
             cursor: pointer;
+        }
+        
+        /* New styles for filter sidebar */
+        .filter-sidebar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        .price-range-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .price-range-inputs input {
+            width: 100px;
+        }
+        
+        .filter-reset {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -123,113 +183,160 @@ if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') { // Common XAMPP setup
                 <div class="alert alert-danger"><?= htmlspecialchars($pageErrorMessage) ?></div>
             <?php endif; ?>
 
-            <div class="row product_1">
-                <div class="col-md-9">
-                    <div class="product_1l">
-                        <p class="mb-0 mt-2">
-                            Showing <?= count($artworksObjects) > 0 ? '1' : '0'; ?>–<?= count($artworksObjects); ?> of <?= count($artworksObjects); ?> results
-                        </p>
-                    </div>
-                </div>
+            <div class="row">
+                <!-- Filter Sidebar -->
                 <div class="col-md-3">
-                    <!-- Sorting/filter options can go here -->
-                </div>
-            </div>
-
-            <div class="row product_2 mt-4">
-                <?php if (!empty($artworksObjects)): ?>
-                    <?php foreach ($artworksObjects as $artwork): ?>
-                        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-                            <div class="prod_main p-1 bg-white clearfix h-100 shadow-sm rounded">
-                                <div class="product_2im clearfix position-relative">
-                                    <div class="product_2imi clearfix">
-                                        <div class="grid clearfix">
-                                            <figure class="effect-jazz mb-0">
-                                                <!-- Link to product detail page, adjust path as needed -->
-                                                <a href="<?= htmlspecialchars($baseUrl) ?>artwork_detail.php?id=<?= $artwork->getArtworkID() ?>">
-                                                    <img src="<?= htmlspecialchars($baseUrl) ?>Images/artworks/<?= htmlspecialchars($artwork->getImage()) ?>"
-                                                        class="w-100"
-                                                        alt="<?= htmlspecialchars($artwork->getTitle()) ?>"
-                                                        loading="lazy">
-                                                </a>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                    <div class="product_2imi1 position-absolute clearfix w-100 top-0 text-center p-2" style="background: rgba(255,255,255,0.1);">
-                                        <ul class="list-inline mb-0">
-                                            <?php if ($artwork->getNumberInStock() > 0): ?>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-sm btn-primary add-to-cart"
-                                                        data-id="<?= $artwork->getArtworkID() ?>" title="Add to Cart">
-                                                        <i class="fa fa-shopping-cart"></i>
-                                                    </button>
-                                                </li>
-                                            <?php endif; ?>
-                                            <li class="list-inline-item">
-                                                <button class="btn btn-sm btn-outline-danger add-to-wishlist"
-                                                    data-id="<?= $artwork->getArtworkID() ?>" title="Add to Wishlist">
-                                                    <i class="fa fa-heart-o"></i>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <?php if ($artwork->getNumberInStock() <= 0): ?>
-                                        <div class="sold-out-overlay">
-                                            <span>Sold Out</span>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="product_2im1 position-relative clearfix">
-                                    <div class="clearfix product_2im1i text-center pt-3 pb-3 px-2">
-                                        <h5 class="font_14 text-uppercase">
-                                            <a class="col_dark text-decoration-none" href="<?= htmlspecialchars($baseUrl) ?>artwork_detail.php?id=<?= $artwork->getArtworkID() ?>">
-                                                <?= htmlspecialchars($artwork->getTitle()) ?>
-                                            </a>
-                                        </h5>
-                                        <p class="font_12 text-muted mb-1"><?= htmlspecialchars($artwork->getCategory()) ?></p>
-                                        <span class="font_12 col_yell">
-                                            <?php
-                                            // Example rating calculation, adjust as needed
-                                            $totalReviews = $artwork->getTotalReviews();
-                                            // This rating logic is placeholder, replace with actual average rating if available
-                                            $average_rating = $totalReviews > 0 ? min(5, max(0, $totalReviews / 5)) : 3.5;
-                                            $fullStars = floor($average_rating);
-                                            $hasHalfStar = ($average_rating - $fullStars) >= 0.5;
-
-                                            for ($i = 1; $i <= 5; $i++) {
-                                                if ($i <= $fullStars) {
-                                                    echo '<i class="fa fa-star"></i>';
-                                                } elseif ($i == $fullStars + 1 && $hasHalfStar) {
-                                                    echo '<i class="fa fa-star-half-o"></i>';
-                                                } else {
-                                                    echo '<i class="fa fa-star-o"></i>';
-                                                }
-                                            }
-                                            ?>
-                                            <small class="text-muted">(<?= $totalReviews ?> reviews)</small>
-                                        </span>
-                                        <h6 class="col_dark mt-2 mb-0">
-                                            $<?= number_format($artwork->getPrice(), 2) ?>
-                                            <?php if ($artwork->getNumberInStock() > 0): ?>
-                                                <small class="text-success d-block">(<?= $artwork->getNumberInStock(); ?> in stock)</small>
-                                            <?php else: ?>
-                                                <small class="text-danger d-block">(Out of stock)</small>
-                                            <?php endif; ?>
-                                        </h6>
-                                    </div>
+                    <div class="filter-sidebar">
+                        <form method="get" action="">
+                            <div class="filter-group">
+                                <div class="filter-title">Categories</div>
+                                <select class="form-select" name="category">
+                                    <option value="">All Categories</option>
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?= htmlspecialchars($category) ?>" <?= $categoryFilter == $category ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($category) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <div class="filter-title">Price Range</div>
+                                <div class="price-range-inputs">
+                                    <input type="number" class="form-control" name="price_min" placeholder="Min" 
+                                           value="<?= $priceMinFilter ? htmlspecialchars($priceMinFilter) : '' ?>">
+                                    <input type="number" class="form-control" name="price_max" placeholder="Max" 
+                                           value="<?= $priceMaxFilter ? htmlspecialchars($priceMaxFilter) : '' ?>">
                                 </div>
                             </div>
+                            
+                            <div class="filter-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="in_stock" id="in_stock" 
+                                           <?= $inStockFilter ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="in_stock">
+                                        In Stock Only
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <a href="product.php" class="btn btn-outline-secondary filter-reset">Reset</a>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Product Listing -->
+                <div class="col-md-9">
+                    <div class="row product_1">
+                        <div class="col-md-9">
+                            <div class="product_1l">
+                                <p class="mb-0 mt-2">
+                                    Showing <?= count($artworksObjects) > 0 ? '1' : '0'; ?>–<?= count($artworksObjects); ?> of <?= count($artworksObjects); ?> results
+                                </p>
+                            </div>
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <?php if (!isset($pageErrorMessage)): // Show only if no other critical error displayed 
-                    ?>
-                        <div class="col-12 text-center py-5">
-                            <h4>No artworks found</h4>
-                            <p>Please check back later or explore our other collections.</p>
+                        <div class="col-md-3">
+                            <!-- Sorting/filter options can go here -->
                         </div>
-                    <?php endif; ?>
-                <?php endif; ?>
+                    </div>
+
+                    <div class="row product_2 mt-4">
+                        <?php if (!empty($artworksObjects)): ?>
+                            <?php foreach ($artworksObjects as $artwork): ?>
+                                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                                    <div class="prod_main p-1 bg-white clearfix h-100 shadow-sm rounded">
+                                        <div class="product_2im clearfix position-relative">
+                                            <div class="product_2imi clearfix">
+                                                <div class="grid clearfix">
+                                                    <figure class="effect-jazz mb-0">
+                                                        <!-- Link to product detail page, adjust path as needed -->
+                                                        <a href="<?= htmlspecialchars($baseUrl) ?>artwork_detail.php?id=<?= $artwork->getArtworkID() ?>">
+                                                            <img src="<?= htmlspecialchars($baseUrl) ?>Images/artworks/<?= htmlspecialchars($artwork->getImage()) ?>"
+                                                                class="w-100"
+                                                                alt="<?= htmlspecialchars($artwork->getTitle()) ?>"
+                                                                loading="lazy">
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                            <div class="product_2imi1 position-absolute clearfix w-100 top-0 text-center p-2" style="background: rgba(255,255,255,0.1);">
+                                                <ul class="list-inline mb-0">
+                                                    <?php if ($artwork->getNumberInStock() > 0): ?>
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-sm btn-primary add-to-cart"
+                                                                data-id="<?= $artwork->getArtworkID() ?>" title="Add to Cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </button>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-sm btn-outline-danger add-to-wishlist"
+                                                            data-id="<?= $artwork->getArtworkID() ?>" title="Add to Wishlist">
+                                                            <i class="fa fa-heart-o"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <?php if ($artwork->getNumberInStock() <= 0): ?>
+                                                <div class="sold-out-overlay">
+                                                    <span>Sold Out</span>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="product_2im1 position-relative clearfix">
+                                            <div class="clearfix product_2im1i text-center pt-3 pb-3 px-2">
+                                                <h5 class="font_14 text-uppercase">
+                                                    <a class="col_dark text-decoration-none" href="<?= htmlspecialchars($baseUrl) ?>artwork_detail.php?id=<?= $artwork->getArtworkID() ?>">
+                                                        <?= htmlspecialchars($artwork->getTitle()) ?>
+                                                    </a>
+                                                </h5>
+                                                <p class="font_12 text-muted mb-1"><?= htmlspecialchars($artwork->getCategory()) ?></p>
+                                                <span class="font_12 col_yell">
+                                                    <?php
+                                                    // Example rating calculation, adjust as needed
+                                                    $totalReviews = $artwork->getTotalReviews();
+                                                    // This rating logic is placeholder, replace with actual average rating if available
+                                                    $average_rating = $totalReviews > 0 ? min(5, max(0, $totalReviews / 5)) : 3.5;
+                                                    $fullStars = floor($average_rating);
+                                                    $hasHalfStar = ($average_rating - $fullStars) >= 0.5;
+
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= $fullStars) {
+                                                            echo '<i class="fa fa-star"></i>';
+                                                        } elseif ($i == $fullStars + 1 && $hasHalfStar) {
+                                                            echo '<i class="fa fa-star-half-o"></i>';
+                                                        } else {
+                                                            echo '<i class="fa fa-star-o"></i>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <small class="text-muted">(<?= $totalReviews ?> reviews)</small>
+                                                </span>
+                                                <h6 class="col_dark mt-2 mb-0">
+                                                    $<?= number_format($artwork->getPrice(), 2) ?>
+                                                    <?php if ($artwork->getNumberInStock() > 0): ?>
+                                                        <small class="text-success d-block">(<?= $artwork->getNumberInStock(); ?> in stock)</small>
+                                                    <?php else: ?>
+                                                        <small class="text-danger d-block">(Out of stock)</small>
+                                                    <?php endif; ?>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <?php if (!isset($pageErrorMessage)): // Show only if no other critical error displayed 
+                            ?>
+                                <div class="col-12 text-center py-5">
+                                    <h4>No artworks found</h4>
+                                    <p>Please check back later or explore our other collections.</p>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
