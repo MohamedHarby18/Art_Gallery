@@ -96,8 +96,12 @@ if ($userId) {
             <div class="profile-info">
               <div class="profile-avatar">
                 <img src="img/customer-avatar.jpg" alt="Customer Avatar">
+                <img src="img/customer-avatar.jpg" alt="Customer Avatar">
               </div>
               <div class="profile-details">
+                <h1 class="customer-name">
+                  <?php echo isset($userData['Fname']) ? htmlspecialchars($userData['Fname']) . ' ' . htmlspecialchars($userData['Lname']) : 'Guest'; ?>
+                </h1>
                 <h1 class="customer-name">
                   <?php echo isset($userData['Fname']) ? htmlspecialchars($userData['Fname']) . ' ' . htmlspecialchars($userData['Lname']) : 'Guest'; ?>
                 </h1>
@@ -105,8 +109,13 @@ if ($userId) {
                 <div class="customer-location">
                   <i class="fa fa-map-marker col_pink me-1"></i> 
                   <?php echo isset($userData['City']) ? htmlspecialchars($userData['City']) : 'Unknown Location'; ?>
+                  <i class="fa fa-map-marker col_pink me-1"></i> 
+                  <?php echo isset($userData['City']) ? htmlspecialchars($userData['City']) : 'Unknown Location'; ?>
                 </div>
                 <div class="customer-meta">
+                  <?php if (isset($userData['created_at'])): ?>
+                    <span><i class="fa fa-star col_pink me-1"></i> Member since <?php echo date('Y', strtotime($userData['created_at'])); ?></span>
+                  <?php endif; ?>
                   <?php if (isset($userData['created_at'])): ?>
                     <span><i class="fa fa-star col_pink me-1"></i> Member since <?php echo date('Y', strtotime($userData['created_at'])); ?></span>
                   <?php endif; ?>
@@ -206,6 +215,7 @@ if ($userId) {
                 </div>
                 <div class="card-content">
                   <div class="card-number"><?php echo $wishlistItems; ?></div>
+                  <div class="card-number"><?php echo $wishlistItems; ?></div>
                   <div class="card-label">Wishlist Items</div>
                 </div>
               </div>
@@ -215,6 +225,7 @@ if ($userId) {
                 </div>
                 <div class="card-content">
                   <div class="card-number"><?php echo $favoriteArtists; ?></div>
+                  <div class="card-number"><?php echo $favoriteArtists; ?></div>
                   <div class="card-label">Favorite Artists</div>
                 </div>
               </div>
@@ -223,6 +234,13 @@ if ($userId) {
                   <i class="fa fa-trophy"></i>
                 </div>
                 <div class="card-content">
+                  <div class="card-number">
+                    <?php 
+                      if ($totalOrders >= 10) echo 'Platinum';
+                      elseif ($totalOrders >= 5) echo 'Gold';
+                      else echo 'Silver';
+                    ?>
+                  </div>
                   <div class="card-number">
                     <?php 
                       if ($totalOrders >= 10) echo 'Platinum';
@@ -327,6 +345,7 @@ if ($userId) {
   </section>
 
   <section id="footer" class="pt-3 pb-3">
+    <?php include './includes/footer.php'; ?>
     <?php include './includes/footer.php'; ?>
   </section>
 <!-- Edit Profile Modal -->
