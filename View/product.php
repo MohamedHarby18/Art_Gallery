@@ -1,7 +1,5 @@
 <?php
 // Enable error reporting (remove/adjust for production)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -53,7 +51,6 @@ if ($_SERVER['DOCUMENT_ROOT'] === '/xampp/htdocs') { // Common XAMPP setup
             display: flex;
             flex-direction: column;
         }
-
         .product_2im1 {
             flex-grow: 1;
             display: flex;

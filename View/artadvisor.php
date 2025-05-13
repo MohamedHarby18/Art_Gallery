@@ -62,22 +62,6 @@ $user_roles = $result_auth->fetch_assoc();
 $stmt_auth->close();
 // $mysqli->close(); // Close this connection if controlDBauth.php doesn't do it and DBController uses a new one.
 
-// Role-based redirection (ONLY for direct page access, NOT for POST requests)
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') { // Only redirect if it's not a POST request for the quiz
-    if ($user_roles["Artist"] == 1) {
-        header("Location: artistprofile.php");
-        exit;
-    } elseif ($user_roles["Advisor"] == 1) {
-        // User is an Advisor, they are already on artadvisor.php, so no redirect needed here.
-        // If artadvisor.php is ONLY for advisors, this is fine.
-        // If general users can access artadvisor.php, this elseif might be redundant or need adjustment.
-    } else {
-        // If the user is neither Artist nor Advisor, and this page is specifically for Advisors,
-        // you might want to redirect them or show an access denied message.
-        // For now, let's assume non-artists/non-advisors can take the quiz.
-    }
-}
-// --- End of Authentication and Role Check ---
 
 
 // --- Quiz Submission Logic ---
@@ -218,22 +202,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
                 <li class="nav-item">
                     <!-- Link to advisor.php (this page) -->
                     <a class="nav-link active" href="artadvisor.php">Art Advisor</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gallery
-                    </a>
-                    <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="gallery.html">All Artworks</a></li>
-                        <li><a class="dropdown-item border-0" href="artists.html">Featured Artists</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
-                </li>
+          
+              
                  <!-- Add Logout Link if user is logged in -->
                 <?php if(isset($_SESSION["user_id"])): ?>
                     <li class="nav-item">
@@ -363,7 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
 </section>
 
 <!-- Featured Artists Section -->
-<section class="py-5 bg-light">
+<!-- <section class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="font_60">Featured Artists</h2>
@@ -407,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
             <a href="artists.html" class="btn btn-outline-secondary">View All Artists</a>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Footer -->
 <footer class="py-5 bg-dark text-white">
@@ -415,18 +385,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
         <div class="row">
             <div class="col-md-4 mb-4">
                 <h5>Art Advisor</h5>
-                <p>Helping you discover art you'll love since 2023. Our personalized recommendations connect you with artworks that match your unique taste.</p>
+                <p>Helping you discover art you'll love since 2025. Our personalized recommendations connect you with artworks that match your unique taste.</p>
             </div>
             <div class="col-md-4 mb-4">
                 <h5>Quick Links</h5>
                 <ul class="list-unstyled">
                     <li><a href="index.php" class="text-white">Home</a></li>
-                    <li><a href="artadvisor.php" class="text-white">Art Advisor</a></li>
-                    <li><a href="gallery.html" class="text-white">Gallery</a></li>
-                    <li><a href="artists.html" class="text-white">Artists</a></li>
-                    <li><a href="about.html" class="text-white">About Us</a></li>
-                    <li><a href="contact.html" class="text-white">Contact</a></li>
-                </ul>
+                    <li><a href="artadvisor.php" class="text-white">Art Advisor</a></li> </ul>
             </div>
             <div class="col-md-4 mb-4">
                 <h5>Stay Connected</h5>
@@ -446,7 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-quiz'])) {
         <hr class="my-4 bg-secondary">
         <div class="row">
             <div class="col-md-6 text-center text-md-start">
-                <p class="mb-0">© 2023 Art Advisor. All rights reserved.</p>
+                <p class="mb-0">© 2025 Art Advisor. All rights reserved.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <p class="mb-0">

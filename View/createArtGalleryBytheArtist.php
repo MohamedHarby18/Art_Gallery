@@ -426,7 +426,7 @@
             <hr class="my-4 bg-secondary">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0">&copy; 2023 Artist Portal. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2025 Artist Portal. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <p class="mb-0">
@@ -609,7 +609,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Year Created</label>
-                            <input type="text" class="form-control" name="artwork-year[]" placeholder="e.g. 2023">
+                            <input type="text" class="form-control" name="artwork-year[]" placeholder="e.g. 2025">
                         </div>
                     </div>
                     <div class="row mt-2">

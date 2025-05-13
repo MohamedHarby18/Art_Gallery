@@ -30,7 +30,7 @@
             <div class="profile-cover" style="background-image: url('img/customer-cover.jpg')"></div>
             <div class="profile-info">
               <div class="profile-avatar">
-                <img src="img/customer-avatar.jpg" alt="Customer Name">
+                <img src="..\Images\n\artist.jpg" alt="Customer Name">
               </div>
               <div class="profile-details">
                 <h1 class="customer-name">Alex Morgan</h1>
@@ -45,11 +45,9 @@
               </div>
               <div class="profile-actions">
                 <button class="btn btn-outline-pink me-2"><i class="fa fa-cog me-1"></i> Edit Profile</button>
-             
-             
-             
-              <?php if (isset($_SESSION["user_id"])): ?>
-                
+
+                <?php if (isset($_SESSION["user_id"])): ?>
+
   <div class="text-end mb-3">
     <a href="logout.php" class="btn btn-pink">
       <i class="fa fa-sign-out me-1"></i> Logout
@@ -172,7 +170,7 @@
                 </div>
                 <div class="order-row">
                   <div class="order-item">#AW-1256</div>
-                  <div class="order-item">Jun 15, 2023</div>
+                  <div class="order-item">Jun 15, 2025</div>
                   <div class="order-item">1</div>
                   <div class="order-item">$450.00</div>
                   <div class="order-item"><span class="status shipped">Shipped</span></div>
@@ -180,7 +178,7 @@
                 </div>
                 <div class="order-row">
                   <div class="order-item">#AW-1248</div>
-                  <div class="order-item">May 28, 2023</div>
+                  <div class="order-item">May 28, 2025</div>
                   <div class="order-item">2</div>
                   <div class="order-item">$720.00</div>
                   <div class="order-item"><span class="status delivered">Delivered</span></div>
@@ -188,7 +186,7 @@
                 </div>
                 <div class="order-row">
                   <div class="order-item">#AW-1235</div>
-                  <div class="order-item">Apr 12, 2023</div>
+                  <div class="order-item">Apr 12, 2025</div>
                   <div class="order-item">1</div>
                   <div class="order-item">$275.00</div>
                   <div class="order-item"><span class="status delivered">Delivered</span></div>
