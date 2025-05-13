@@ -40,7 +40,7 @@ display art gallery
         <div class="gallery-meta">
             <div class="meta-item">
                 <div class="meta-label">Exhibition Dates</div>
-                <div class="meta-value">June 15 - August 30, 2023</div>
+                <div class="meta-value">June 15 - August 30, 2025</div>
             </div>
             <div class="meta-item">
                 <div class="meta-label">Artworks</div>
@@ -79,7 +79,7 @@ display art gallery
             <img src="img/artwork2.jpg" alt="Neon Crossroads">
             <div class="artwork-label">
                 <div class="artwork-name">Neon Crossroads</div>
-                <div class="artwork-medium">Acrylic, 2023</div>
+                <div class="artwork-medium">Acrylic, 2025</div>
             </div>
         </div>
         
@@ -95,7 +95,7 @@ display art gallery
             <img src="img/artwork4.jpg" alt="Dawn Over Downtown">
             <div class="artwork-label">
                 <div class="artwork-name">Dawn Over Downtown</div>
-                <div class="artwork-medium">Digital Painting, 2023</div>
+                <div class="artwork-medium">Digital Painting, 2025</div>
             </div>
         </div>
     </div>
@@ -122,7 +122,7 @@ display art gallery
             </div>
             <div class="artwork-card-body">
                 <h5 class="artwork-card-title">Neon Crossroads</h5>
-                <p class="artwork-card-meta">Acrylic • 18" × 24" • 2023</p>
+                <p class="artwork-card-meta">Acrylic • 18" × 24" • 2025</p>
                 <p class="artwork-card-price">$1,800</p>
                 <a href="#" class="btn btn-sm bg_pink text-white mt-2">View Details</a>
             </div>
@@ -146,7 +146,7 @@ display art gallery
             </div>
             <div class="artwork-card-body">
                 <h5 class="artwork-card-title">Dawn Over Downtown</h5>
-                <p class="artwork-card-meta">Digital Painting • 24" × 36" • 2023</p>
+                <p class="artwork-card-meta">Digital Painting • 24" × 36" • 2025</p>
                 <p class="artwork-card-price">$1,200</p>
                 <a href="#" class="btn btn-sm bg_pink text-white mt-2">View Details</a>
             </div>
@@ -209,7 +209,7 @@ display art gallery
         <hr class="my-4 bg-secondary">
         <div class="row">
             <div class="col-md-6 text-center text-md-start">
-                <p class="mb-0">&copy; 2023 Virtual Gallery. All rights reserved.</p>
+                <p class="mb-0">&copy; 2025 Virtual Gallery. All rights reserved.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <p class="mb-0">

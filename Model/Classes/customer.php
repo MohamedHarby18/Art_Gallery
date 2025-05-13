@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ .'/users.php';
 use Model\Classes\users;
 
 class Customer extends User
