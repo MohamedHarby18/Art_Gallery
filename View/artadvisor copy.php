@@ -1,39 +1,44 @@
 <?php
-require_once '../Controller/DBController.php';
-require_once '../Controller/DBArtworkManager.php'; // Include the new file
-$db = new DBController();
 
-// Start session - MUST be at the very top before any output
+ $mysqli = require __DIR__ . "/../Controller/controlDBauth.php";
+ require_once '../Controller/DBController.php';
+require_once '../Controller/DBArtworkManager.php'; // Include the new file
+// Start session ONCE at the very beginning
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// --- AUTHENTICATION & ARTIST ID ---
-if (!isset($_SESSION['user_id'])) {
-    header("Location: registration.php"); // Or login.php if that's your entry point
+// Check if user is logged in via session
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
     exit;
 }
-$artistId = (int)$_SESSION['user_id'];
 
 
-// Fetch artist data from users table
-$artist_data_from_db = $db->select("SELECT * FROM users WHERE UserID = ? AND Artist = 1", [$artistId]);
-if (!$artist_data_from_db || count($artist_data_from_db) === 0) {
-    // This means the logged-in user is not an artist or an error occurred
-    error_log("Attempt to access artist profile by non-artist or invalid UserID: " . $artistId);
-    die("Artist profile not found or you are not registered as an artist.");
+// Get user data from the database
+$userID = $_SESSION["user_id"];
+$sql = "SELECT Artist, Advisor FROM users WHERE UserID = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("i", $userID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    // User ID not found in DB
+    header("Location: registration.php");
+    exit;
 }
-$artist = $artist_data_from_db[0];
 
-// Count artist's artworks
-$artworksCount_data = $db->select("SELECT COUNT(*) as count FROM artworks WHERE ArtistID = ?", [$artistId]);
-$artworksCount = $artworksCount_data ? $artworksCount_data[0]['count'] : 0;
+$user = $result->fetch_assoc();
 
-// Average Rating - Commented out as per your code
-// $avgRating_data = $db->select("SELECT AVG(rating) as avg_rating FROM reviews WHERE ArtworkID IN (SELECT ArtworkID FROM artworks WHERE ArtistID = ?)", [$artistId]);
-// $avgRating = $avgRating_data ? round($avgRating_data[0]['avg_rating'], 1) : 'No Ratings';
-$avgRating = 'N/A'; // Placeholder
+// Role-based redirection
+if ($user["Advisor"] !== 1) {
+    header("Location: index.php");
+    exit;
+}
 
+$db = new DBController();
+ 
 // --- Handle Messages from other pages (e.g., after adding/editing artwork) ---
 $success_message = '';
 $error_message = '';
@@ -55,7 +60,6 @@ if (isset($_SESSION['error_message'])) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Artist Profile - <?php echo htmlspecialchars($artist['Fname'] . ' ' . $artist['Lname']); ?></title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/global.css" rel="stylesheet">
@@ -74,8 +78,7 @@ if (isset($_SESSION['error_message'])) {
                     <div class="carousel-item active">
                         <img src="img/1.jpg" class="d-block w-100" alt="Artist Virtual gallery" style="max-height: 70vh;">
                         <div class="carousel-caption d-md-block">
-                            <h1 class="text-white font_60">Artist Virtual gallery</h1>
-                            <h4 class="text-white mt-3"><?php echo htmlspecialchars($artist['Fname'] . ' ' . $artist['Lname']); ?></h4>
+                            <h1 class="text-white font_60">Best of the week🌟</h1>
                         </div>
                     </div>
                 </div>
@@ -89,18 +92,9 @@ if (isset($_SESSION['error_message'])) {
             <div class="artist-header text-center">
                 <?php
                     $avatarPath = '..\Images\n\artist.png'; // Default avatar
-                    if (!empty($artist['ProfileImage'])) {
-                        $potentialAvatarPath = '../Images/avatars/' . htmlspecialchars($artist['ProfileImage']);
-                        if (file_exists(dirname(__DIR__) . '/Images/avatars/' . $artist['ProfileImage'])) {
-                            $avatarPath = $potentialAvatarPath;
-                        }
-                    }
+                        
                 ?>
-                <img src="<?php echo $avatarPath; ?>" alt="<?php echo htmlspecialchars($artist['Fname']); ?>" class="artist-avatar">
-                <h1 class="artist-name"><?php echo htmlspecialchars($artist['Fname'] . ' ' . $artist['Lname']); ?></h1>
-                <div class="artist-location">
-                    <i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($artist['Address'] ?? 'N/A'); ?>
-                </div>
+
                 <div class="artist-social">
                     <a href="#"><i class="fa fa-instagram"></i></a>
                     <a href="#"><i class="fa fa-facebook"></i></a>
@@ -108,26 +102,14 @@ if (isset($_SESSION['error_message'])) {
                     <a href="#"><i class="fa fa-pinterest"></i></a>
                     <a href="#"><i class="fa fa-globe"></i></a>
                 </div>
-                <p class="artist-bio text-black">
-                    <?php echo htmlspecialchars($artist['Bio'] ?? ($artist['Fname'] . ' ' . $artist['Lname'] . ' is a talented artist.')); ?>
-                    Contact at <?php echo htmlspecialchars($artist['Email'] ?? 'N/A'); ?>
-                    <?php if(!empty($artist['phoneNumber'])): ?>
-                         or <?php echo htmlspecialchars($artist['phoneNumber']); ?>.
-                    <?php endif; ?>
-                </p>
+            
                 <div class="artist-stats">
-                    <div class="stat-item">
-                        <div class="stat-number"><?php echo $artworksCount; ?></div>
-                        <div class="stat-label">Artworks</div>
-                    </div>
+                  
                      <!-- <div class="stat-item">
                         <div class="stat-number"><?php echo $avgRating; ?></div>
                         <div class="stat-label">Average Rating</div>
                     </div> -->
-                    <div class="stat-item">
-                        <div class="stat-number"><?php echo date('Y', strtotime($artist['created_at'] ?? '2015')); ?></div>
-                        <div class="stat-label">Member Since</div>
-                    </div>
+                    
                 </div>
                 <div class="mt-4">
                     <a href="../Controller/manage_artwork.php" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add to the virtual gallery</a>
@@ -204,8 +186,6 @@ if (isset($_SESSION['error_message'])) {
                                     </div>
                                 </div>';
                             }
-                        } else {
-                            echo '<div class="col-12 text-center py-5"><p class="lead">You haven\'t added any artworks yet.</p> <a href="../Controller/manage_artwork.php?action=add" class="btn btn-lg btn-success mt-3">Add Your First Artwork</a></div>';
                         }
                         ?>
                     </div>

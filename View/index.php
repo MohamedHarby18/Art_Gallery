@@ -149,6 +149,12 @@ if ($user["Artist"] == 1) {
 							<a href="#profile_o" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
 								<span class="d-md-block">Street</span>
 							</a>
+				      	</li>
+
+						<li class="nav-item">
+							<a href="#profile_o" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+								<span class="d-md-block">Weekly recommendations</span>
+							</a>
 						</li>
 					</ul>
 				</div>

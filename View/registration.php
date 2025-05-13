@@ -87,12 +87,12 @@ unset($_SESSION['errors'], $_SESSION['old_input']); // Clear after displaying
 </nav>
 </section>
  </div>
- <div class="main_2 clearfix">
+ <div class="main_2 clearfix" max-height="80vh">
    <section id="center" class="center_home">
  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="img/1.jpg" class="d-block w-100" alt="Register">
+      <img src="img/1.jpg" class="d-block w-100" alt="Register"  max-height="80vh">
       <div class="carousel-caption d-md-block">
          <h1 class="text-white font_60">Join Our Community</h1>
          <h4 class="text-white mt-3">Create Your Art Account</h4>
@@ -321,7 +321,7 @@ if (isset($_SESSION["error"])) {
       <li class="d-inline-block me-3 font_14"><a href="#">TERMS OF USE</a></li>
       <li class="d-inline-block font_14"><a href="#">FAQ</a></li>
      </ul>
-     <p class="mb-0">© 2023 Art Web. All Rights Reserved | Design by <a class="col_pink" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
+     <p class="mb-0">© 2025 Art Web. All Rights Reserved | Design by <a class="col_pink" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
     </div>
    </div>
  </div>
